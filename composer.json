@@ -1,0 +1,25 @@
+{
+  "name": "michalbiarda/shipx-php-sdk",
+  "version": "0.1.0",
+  "authors": [
+    {
+      "email": "m.biarda@gmail.com",
+      "name": "Michał Biarda"
+    }
+  ],
+  "require": {
+    "php": "^7.4",
+    "spatie/data-transfer-object": "^2.5",
+    "guzzlehttp/guzzle": "^7.2",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "MB\\ShipXSDK\\": "src/"
+    }
+  },
+  "license": "Beerware",
+  "require-dev": {
+    "phpunit/phpunit": "^9.4"
+  }
+}
