@@ -16,5 +16,5 @@ class Error extends DataTransferObject
 
     public string $message;
 
-    public array $details;
+    public ?array $details;
 }

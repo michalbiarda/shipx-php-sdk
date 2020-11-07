@@ -8,6 +8,7 @@ namespace MB\ShipXSDK\Client;
 
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
 use MB\ShipXSDK\DataTransferObject\DataTransferObject;
 use MB\ShipXSDK\Method\MethodInterface;
 use MB\ShipXSDK\Method\WithAuthorizationInterface;
@@ -72,7 +73,7 @@ class Client
                 $this->baseUri . $request->getUri(),
                 $this->buildOptions($request)
             );
-        } catch (ClientException $e) {
+        } catch (ClientException|ServerException $e) {
             $httpResponse = $e->getResponse();
         }
         return $this->responseFactory->create($method, $httpResponse);
