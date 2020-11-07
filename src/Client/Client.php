@@ -13,33 +13,43 @@ use MB\ShipXSDK\Method\MethodInterface;
 use MB\ShipXSDK\Method\WithAuthorizationInterface;
 use MB\ShipXSDK\Request\Request;
 use MB\ShipXSDK\Request\RequestFactory;
+use MB\ShipXSDK\Response\HttpResponseProcessor;
 use MB\ShipXSDK\Response\Response;
 use MB\ShipXSDK\Response\ResponseFactory;
 
 class Client
 {
-    private HttpClient $httpClient;
-
-    private RequestFactory $requestFactory;
-
-    private ResponseFactory $responseFactory;
-
     private string $baseUri;
 
     private ?string $authToken;
 
+    private ?HttpClient $httpClient;
+
+    private ?RequestFactory $requestFactory;
+
+    private ?ResponseFactory $responseFactory;
+
     public function __construct(
-        HttpClient $httpClient,
-        RequestFactory $requestFactory, 
-        ResponseFactory $responseFactory,
         string $baseUri,
-        ?string $authToken
+        ?string $authToken = null,
+        ?HttpClient $httpClient = null,
+        ?RequestFactory $requestFactory = null,
+        ?ResponseFactory $responseFactory = null
     ) {
+        $this->baseUri = $baseUri;
+        $this->authToken = $authToken;
+        if (is_null($httpClient)) {
+            $httpClient = new HttpClient();
+        }
+        if (is_null($requestFactory)) {
+            $requestFactory = new RequestFactory();
+        }
+        if (is_null($responseFactory)) {
+            $responseFactory = new ResponseFactory(new HttpResponseProcessor());
+        }
         $this->httpClient = $httpClient;
         $this->requestFactory = $requestFactory;
         $this->responseFactory = $responseFactory;
-        $this->baseUri = $baseUri;
-        $this->authToken = $authToken;
     }
 
     public function callMethod(
