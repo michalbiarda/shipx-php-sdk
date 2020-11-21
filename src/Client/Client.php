@@ -9,6 +9,8 @@ namespace MB\ShipXSDK\Client;
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
 use MB\ShipXSDK\DataTransferObject\DataTransferObject;
 use MB\ShipXSDK\Method\MethodInterface;
 use MB\ShipXSDK\Method\WithAuthorizationInterface;
@@ -17,6 +19,7 @@ use MB\ShipXSDK\Request\RequestFactory;
 use MB\ShipXSDK\Response\HttpResponseProcessor;
 use MB\ShipXSDK\Response\Response;
 use MB\ShipXSDK\Response\ResponseFactory;
+use Psr\Http\Message\RequestInterface;
 
 class Client
 {
@@ -29,6 +32,8 @@ class Client
     private ?RequestFactory $requestFactory;
 
     private ?ResponseFactory $responseFactory;
+
+    private ?RequestInterface $lastHttpRequest;
 
     public function __construct(
         string $baseUri,
@@ -79,6 +84,11 @@ class Client
         return $this->responseFactory->create($method, $httpResponse);
     }
 
+    public function getLastHttpRequest():? RequestInterface
+    {
+        return $this->lastHttpRequest;
+    }
+
     private function buildOptions(Request $request): array
     {
         $options = [];
@@ -88,6 +98,12 @@ class Client
         if ($request->getPayload()) {
             $options['json'] = $request->getPayload();
         }
+        $stack = HandlerStack::create();
+        $stack->push(Middleware::mapRequest(function (RequestInterface $request) {
+            $this->lastHttpRequest = $request;
+            return $request;
+        }));
+        $options['handler'] = $stack;
         return $options;
     }
 }
