@@ -19,7 +19,7 @@ abstract class AbstractShipmentForm extends DataTransferObject
      */
     public array $parcels;
 
-    public ?CustomAttributes $custom_attributes;
+    public ?ShipmentCustomAttributes $custom_attributes;
 
     public ?Cod $cod;
 

@@ -14,6 +14,8 @@ use Spatie\DataTransferObject\ValueCaster as OriginalValueCaster;
 
 class DataTransferObject extends OriginalDataTransferObject
 {
+    protected bool $ignoreMissing = true;
+
     const CODE_INVALID_PARAMS = 1;
 
     public function __construct(array $parameters = [])

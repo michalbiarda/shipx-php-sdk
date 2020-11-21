@@ -28,7 +28,7 @@ class Shipment extends DataTransferObject
 
     public ?string $comments;
 
-    public ?CustomAttributes $custom_attributes;
+    public ?ShipmentCustomAttributes $custom_attributes;
 
     public Sender $sender;
 

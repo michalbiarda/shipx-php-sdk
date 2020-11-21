@@ -8,7 +8,7 @@ namespace MB\ShipXSDK\Model;
 
 use MB\ShipXSDK\DataTransferObject\DataTransferObject;
 
-class CustomAttributes extends DataTransferObject
+class ShipmentCustomAttributes extends DataTransferObject
 {
     public ?string $target_point;
 
