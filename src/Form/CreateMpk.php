@@ -4,22 +4,13 @@
  * See LICENSE.txt for license details.
  */
 
-namespace MB\ShipXSDK\Model;
+namespace MB\ShipXSDK\Form;
 
-use DateTime;
 use MB\ShipXSDK\DataTransferObject\DataTransferObject;
 
-class Mpk extends DataTransferObject
+class CreateMpk extends DataTransferObject
 {
-    public int $id;
-
-    public string $href;
-
     public string $name;
 
     public string $description;
-
-    public DateTime $created_at;
-
-    public DateTime $updated_at;
 }

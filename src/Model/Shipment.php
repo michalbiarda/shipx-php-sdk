@@ -24,7 +24,7 @@ class Shipment extends DataTransferObject
 
     public string $external_customer_id;
 
-    public ?Mpk $mpk;
+    public ?MpkSimple $mpk;
 
     public ?string $comments;
 
