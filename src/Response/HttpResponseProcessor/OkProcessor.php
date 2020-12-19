@@ -8,6 +8,7 @@ namespace MB\ShipXSDK\Response\HttpResponseProcessor;
 
 use MB\ShipXSDK\DataTransferObject\DataTransferObject;
 use MB\ShipXSDK\Method\MethodInterface;
+use MB\ShipXSDK\Method\WithJsonArrayResponseInterface;
 use MB\ShipXSDK\Method\WithJsonResponseInterface;
 
 class OkProcessor extends AbstractJsonContentProcessor
@@ -26,6 +27,9 @@ class OkProcessor extends AbstractJsonContentProcessor
     {
         if (!$method instanceof WithJsonResponseInterface) {
             return null;
+        }
+        if ($method instanceof WithJsonArrayResponseInterface) {
+            $data = ['items' => $data];
         }
         $modelClass = $method->getResponsePayloadModelName();
         return new $modelClass($data);

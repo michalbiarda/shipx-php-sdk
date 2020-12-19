@@ -4,11 +4,16 @@
  * See LICENSE.txt for license details.
  */
 
-namespace MB\ShipXSDK\Model;
+namespace MB\ShipXSDK\Form;
 
 use MB\ShipXSDK\DataTransferObject\DataTransferObject;
+use MB\ShipXSDK\Model\Cod;
+use MB\ShipXSDK\Model\Insurance;
+use MB\ShipXSDK\Model\Receiver;
+use MB\ShipXSDK\Model\Sender;
+use MB\ShipXSDK\Model\ShipmentCustomAttributes;
 
-abstract class AbstractShipmentForm extends DataTransferObject
+abstract class AbstractCreateShipment extends DataTransferObject
 {
     public Receiver $receiver;
 
@@ -27,7 +32,8 @@ abstract class AbstractShipmentForm extends DataTransferObject
 
     public ?string $reference;
 
-    public ?bool $is_return;
+    // @todo This doesn't work with Paczkomaty. Check how to deal with it.
+    // public ?bool $is_return;
 
     /**
      * @var string[]

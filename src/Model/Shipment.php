@@ -13,7 +13,7 @@ class Shipment extends DataTransferObject
 {
     public string $href;
 
-    public string $id;
+    public int $id;
 
     public string $status;
 
@@ -22,7 +22,10 @@ class Shipment extends DataTransferObject
      */
     public array $parcels;
 
-    public string $external_customer_id;
+    /**
+     * @todo Check what is the correct type
+     */
+    public ?string $external_customer_id;
 
     public ?MpkSimple $mpk;
 
@@ -34,7 +37,10 @@ class Shipment extends DataTransferObject
 
     public Receiver $receiver;
 
-    public int $created_by_id;
+    /**
+     * @todo Check what is the correct type
+     */
+    public ?int $created_by_id;
 
     public ?Cod $cod;
 
@@ -52,17 +58,14 @@ class Shipment extends DataTransferObject
     public ?string $tracking_number;
 
     /**
-     * @todo Check what is the correct type
+     * @var \MB\ShipXSDK\Model\Offer[]
      */
     public array $offers;
 
-    /**
-     * @todo Check what is the correct type
-     */
-    public ?array $selected_offer;
+    public ?Offer $selected_offer;
 
     /**
-     * @todo Check what is the correct type
+     * @var \MB\ShipXSDK\Model\Transaction[]
      */
     public ?array $transactions;
 

@@ -21,6 +21,7 @@ use MB\ShipXSDK\Test\Unit\Stub\HttpResponse\Response400WithoutJsonBody;
 use MB\ShipXSDK\Test\Unit\Stub\HttpResponse\Response400WithoutJsonHeader;
 use MB\ShipXSDK\Test\Unit\Stub\MethodWithoutPayload;
 use MB\ShipXSDK\Test\Unit\Stub\MethodWithResponsePayload;
+use MB\ShipXSDK\Test\Unit\Stub\ModelWithItemsArray;
 use MB\ShipXSDK\Test\Unit\Stub\ProcessorReturningNull;
 use MB\ShipXSDK\Test\Unit\Stub\ProcessorReturningSimpleResponse;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -112,6 +113,15 @@ class HttpResponseProcessorTest extends TestCase
         $this->assertInstanceOf(Response::class, $result);
         $this->assertTrue($result->getSuccess());
         $this->assertInstanceOf(DataTransferObject::class, $result->getPayload());
+    }
+
+    public function testProcessReturnsProperResponseForOkResponseWithJsonArray(): void
+    {
+//        $httpResponseProcessor = new HttpResponseProcessor();
+//        $result = $httpResponseProcessor->process(new ModelWithItemsArray(), new OkResponse($okStatusCode));
+//        $this->assertInstanceOf(Response::class, $result);
+//        $this->assertTrue($result->getSuccess());
+//        $this->assertInstanceOf(DataTransferObject::class, $result->getPayload());
     }
 
     /**

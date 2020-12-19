@@ -16,7 +16,7 @@ class ParcelsSimple extends DataTransferObject
 
     public ?WeightSimple $weight;
 
-    public ?string $id;
+    public ?int $id;
 
     public ?bool $is_non_standard;
 

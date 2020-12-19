@@ -20,6 +20,7 @@ use MB\ShipXSDK\Response\HttpResponseProcessor;
 use MB\ShipXSDK\Response\Response;
 use MB\ShipXSDK\Response\ResponseFactory;
 use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
 class Client
 {
@@ -34,6 +35,8 @@ class Client
     private ?ResponseFactory $responseFactory;
 
     private ?RequestInterface $lastHttpRequest;
+
+    private ?ResponseInterface $lastHttpResponse;
 
     public function __construct(
         string $baseUri,
@@ -89,6 +92,11 @@ class Client
         return $this->lastHttpRequest;
     }
 
+    public function getLastHttpResponse():? ResponseInterface
+    {
+        return $this->lastHttpResponse;
+    }
+
     private function buildOptions(Request $request): array
     {
         $options = [];
@@ -102,6 +110,10 @@ class Client
         $stack->push(Middleware::mapRequest(function (RequestInterface $request) {
             $this->lastHttpRequest = $request;
             return $request;
+        }));
+        $stack->push(Middleware::mapResponse(function (ResponseInterface $response) {
+            $this->lastHttpResponse = $response;
+            return $response;
         }));
         $options['handler'] = $stack;
         return $options;

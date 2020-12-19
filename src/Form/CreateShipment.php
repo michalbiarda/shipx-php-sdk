@@ -4,9 +4,9 @@
  * See LICENSE.txt for license details.
  */
 
-namespace MB\ShipXSDK\Model;
+namespace MB\ShipXSDK\Form;
 
-class ShipmentOfferForm extends AbstractShipmentForm
+class CreateShipment extends AbstractCreateShipment
 {
-
+    public string $service;
 }
