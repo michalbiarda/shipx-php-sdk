@@ -15,10 +15,12 @@ use MB\ShipXSDK\Response\Response;
 use MB\ShipXSDK\Test\Unit\Stub\HttpResponse\ErrorResponse;
 use MB\ShipXSDK\Test\Unit\Stub\HttpResponse\NoContentResponse;
 use MB\ShipXSDK\Test\Unit\Stub\HttpResponse\OkResponse;
+use MB\ShipXSDK\Test\Unit\Stub\HttpResponse\Response200WithJsonArrayBody;
 use MB\ShipXSDK\Test\Unit\Stub\HttpResponse\Response200WithoutJsonBody;
 use MB\ShipXSDK\Test\Unit\Stub\HttpResponse\Response200WithoutJsonHeader;
 use MB\ShipXSDK\Test\Unit\Stub\HttpResponse\Response400WithoutJsonBody;
 use MB\ShipXSDK\Test\Unit\Stub\HttpResponse\Response400WithoutJsonHeader;
+use MB\ShipXSDK\Test\Unit\Stub\MethodWithArrayResponsePayload;
 use MB\ShipXSDK\Test\Unit\Stub\MethodWithoutPayload;
 use MB\ShipXSDK\Test\Unit\Stub\MethodWithResponsePayload;
 use MB\ShipXSDK\Test\Unit\Stub\ModelWithItemsArray;
@@ -117,11 +119,12 @@ class HttpResponseProcessorTest extends TestCase
 
     public function testProcessReturnsProperResponseForOkResponseWithJsonArray(): void
     {
-//        $httpResponseProcessor = new HttpResponseProcessor();
-//        $result = $httpResponseProcessor->process(new ModelWithItemsArray(), new OkResponse($okStatusCode));
-//        $this->assertInstanceOf(Response::class, $result);
-//        $this->assertTrue($result->getSuccess());
-//        $this->assertInstanceOf(DataTransferObject::class, $result->getPayload());
+        $httpResponseProcessor = new HttpResponseProcessor();
+        $result = $httpResponseProcessor
+            ->process(new MethodWithArrayResponsePayload(), new Response200WithJsonArrayBody());
+        $this->assertInstanceOf(Response::class, $result);
+        $this->assertTrue($result->getSuccess());
+        $this->assertInstanceOf(DataTransferObject::class, $result->getPayload());
     }
 
     /**

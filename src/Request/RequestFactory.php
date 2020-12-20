@@ -39,18 +39,18 @@ class RequestFactory
      * @param array $uriParams
      * @param array $queryParams
      * @return string
+     * @throws InvalidArgumentException
+     * @throws InvalidQueryParamsException
      */
     private function buildUri(MethodInterface $method, array $uriParams, array $queryParams): string
     {
-        $uriParts = explode('/', $method->getUriTemplate());
-        foreach ($uriParts as $key => $part) {
-            if (substr($part, 0, 1) === ':') {
-                $param = substr($part, 1);
-                if (!array_key_exists($param, $uriParams)) {
-                    throw new InvalidArgumentException(sprintf('Value for "%s" param is missing.', $param));
-                } else {
-                    $uriParts[$key] = $uriParams[$param];
-                }
+        $uri = $method->getUriTemplate();
+        $uriParamsFromTemplate = $this->getUriParamsFromTemplate($uri);
+        foreach ($uriParamsFromTemplate as $param) {
+            if (!array_key_exists($param, $uriParams)) {
+                throw new InvalidArgumentException(sprintf('Value for "%s" param is missing.', $param));
+            } else {
+                $uri = str_replace(':' . $param, $uriParams[$param], $uri);
             }
         }
         foreach ($queryParams as $param => $value) {
@@ -96,7 +96,7 @@ class RequestFactory
             }
         }
         $query = http_build_query($queryParams);
-        return join('/', $uriParts) . ($query ? '?' . $query : '');
+        return $uri . ($query ? '?' . $query : '');
     }
 
     /**
@@ -160,5 +160,15 @@ class RequestFactory
                 sprintf('Value "%s" is not allowed for param "%s" for this method.', $value, $param)
             );
         }
+    }
+
+    /**
+     * @param string $uriTemplate
+     * @return string[]
+     */
+    private function getUriParamsFromTemplate(string $uriTemplate): array
+    {
+        preg_match_all('/:([a-z_]+)/', $uriTemplate, $matches);
+        return $matches[1];
     }
 }
