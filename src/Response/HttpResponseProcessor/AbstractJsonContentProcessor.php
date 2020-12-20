@@ -8,6 +8,7 @@ namespace MB\ShipXSDK\Response\HttpResponseProcessor;
 
 use MB\ShipXSDK\DataTransferObject\DataTransferObject;
 use MB\ShipXSDK\Method\MethodInterface;
+use MB\ShipXSDK\Method\WithBinaryResponseInterface;
 use MB\ShipXSDK\Response\Response;
 use Psr\Http\Message\ResponseInterface;
 use function json_decode;

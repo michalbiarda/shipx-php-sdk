@@ -9,21 +9,23 @@ namespace MB\ShipXSDK\Test\Unit\Response;
 use InvalidArgumentException;
 use MB\ShipXSDK\DataTransferObject\DataTransferObject;
 use MB\ShipXSDK\Method\MethodInterface;
+use MB\ShipXSDK\Model\BinaryContent;
 use MB\ShipXSDK\Model\Error;
 use MB\ShipXSDK\Response\HttpResponseProcessor;
 use MB\ShipXSDK\Response\Response;
 use MB\ShipXSDK\Test\Unit\Stub\HttpResponse\ErrorResponse;
 use MB\ShipXSDK\Test\Unit\Stub\HttpResponse\NoContentResponse;
 use MB\ShipXSDK\Test\Unit\Stub\HttpResponse\OkResponse;
+use MB\ShipXSDK\Test\Unit\Stub\HttpResponse\Response200WithBinaryBody;
 use MB\ShipXSDK\Test\Unit\Stub\HttpResponse\Response200WithJsonArrayBody;
 use MB\ShipXSDK\Test\Unit\Stub\HttpResponse\Response200WithoutJsonBody;
 use MB\ShipXSDK\Test\Unit\Stub\HttpResponse\Response200WithoutJsonHeader;
 use MB\ShipXSDK\Test\Unit\Stub\HttpResponse\Response400WithoutJsonBody;
 use MB\ShipXSDK\Test\Unit\Stub\HttpResponse\Response400WithoutJsonHeader;
 use MB\ShipXSDK\Test\Unit\Stub\MethodWithArrayResponsePayload;
+use MB\ShipXSDK\Test\Unit\Stub\MethodWithBinaryResponse;
 use MB\ShipXSDK\Test\Unit\Stub\MethodWithoutPayload;
 use MB\ShipXSDK\Test\Unit\Stub\MethodWithResponsePayload;
-use MB\ShipXSDK\Test\Unit\Stub\ModelWithItemsArray;
 use MB\ShipXSDK\Test\Unit\Stub\ProcessorReturningNull;
 use MB\ShipXSDK\Test\Unit\Stub\ProcessorReturningSimpleResponse;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -125,6 +127,15 @@ class HttpResponseProcessorTest extends TestCase
         $this->assertInstanceOf(Response::class, $result);
         $this->assertTrue($result->getSuccess());
         $this->assertInstanceOf(DataTransferObject::class, $result->getPayload());
+    }
+
+    public function testProcessReturnsProperResponseForOkResponseWithBinaryContent(): void
+    {
+        $httpResponseProcessor = new HttpResponseProcessor();
+        $result = $httpResponseProcessor->process(new MethodWithBinaryResponse(), new Response200WithBinaryBody());
+        $this->assertInstanceOf(Response::class, $result);
+        $this->assertTrue($result->getSuccess());
+        $this->assertInstanceOf(BinaryContent::class, $result->getPayload());
     }
 
     /**

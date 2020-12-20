@@ -8,6 +8,7 @@ namespace MB\ShipXSDK\Response;
 
 use InvalidArgumentException;
 use MB\ShipXSDK\Method\MethodInterface;
+use MB\ShipXSDK\Response\HttpResponseProcessor\BinaryContentProcessor;
 use MB\ShipXSDK\Response\HttpResponseProcessor\ErrorProcessor;
 use MB\ShipXSDK\Response\HttpResponseProcessor\NoContentProcessor;
 use MB\ShipXSDK\Response\HttpResponseProcessor\OkProcessor;
@@ -54,6 +55,7 @@ class HttpResponseProcessor
         return [
             new ErrorProcessor(),
             new OkProcessor(),
+            new BinaryContentProcessor(),
             new NoContentProcessor()
         ];
     }
