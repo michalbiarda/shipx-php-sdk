@@ -12,7 +12,7 @@ use MB\ShipXSDK\Method\WithBinaryResponseInterface;
 use MB\ShipXSDK\Method\WithQueryParamsInterface;
 use MB\ShipXSDK\Request\Request;
 
-class GetLabel implements
+class GetLabels implements
     MethodInterface,
     WithBinaryResponseInterface,
     WithAuthorizationInterface,
@@ -25,12 +25,12 @@ class GetLabel implements
 
     public function getUriTemplate(): string
     {
-        return '/v1/shipments/:shipment_id/label';
+        return '/v1/organizations/:organization_id/shipments/labels';
     }
 
     public function getRequiredQueryParams(): array
     {
-        return [];
+        return ['shipment_ids'];
     }
 
     public function getOptionalQueryParams(): array

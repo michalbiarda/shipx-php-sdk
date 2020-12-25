@@ -14,6 +14,7 @@ use MB\ShipXSDK\Method\WithAuthorizationInterface;
 use MB\ShipXSDK\Method\WithFilterableResultsInterface;
 use MB\ShipXSDK\Method\WithJsonRequestInterface;
 use MB\ShipXSDK\Method\WithPaginatedResultsInterface;
+use MB\ShipXSDK\Method\WithQueryParamsInterface;
 use MB\ShipXSDK\Method\WithSortableResultsInterface;
 
 class RequestFactory
@@ -53,6 +54,18 @@ class RequestFactory
                 $uri = str_replace(':' . $param, $uriParams[$param], $uri);
             }
         }
+        $requiredParams = [];
+        if ($method instanceof WithQueryParamsInterface) {
+            /** @var WithQueryParamsInterface $method */
+            $requiredParams = array_merge($requiredParams, $method->getRequiredQueryParams());
+        }
+        $missingRequiredParams = array_diff($requiredParams, array_keys($queryParams));
+        if (!empty($missingRequiredParams)) {
+            throw new InvalidQueryParamsException(sprintf(
+                'Values for the following query params are missing: %s',
+                join(', ', $missingRequiredParams)
+            ));
+        }
         foreach ($queryParams as $param => $value) {
             switch ($param) {
                 case WithSortableResultsInterface::SORT_BY_QUERY_PARAM:
@@ -85,17 +98,27 @@ class RequestFactory
                     }
                     break;
                 default:
+                    $validParams = [];
                     if ($method instanceof WithFilterableResultsInterface) {
                         /** @var $method WithFilterableResultsInterface */
-                        if (!in_array($param, $method->getFilters())) {
-                            $this->throwInvalidQueryParamException($param, $value);
-                        }
-                        break;
+                        $validParams = array_merge($validParams, $method->getFilters());
                     }
-                    $this->throwInvalidQueryParamException($param);
+                    if ($method instanceof WithQueryParamsInterface) {
+                        /** @var $method WithQueryParamsInterface */
+                        $validParams = array_merge(
+                            $validParams,
+                            $method->getOptionalQueryParams(),
+                            $method->getRequiredQueryParams()
+                        );
+                    }
+                    if (!in_array($param, $validParams)) {
+                        $this->throwInvalidQueryParamException($param);
+                    }
+                    break;
             }
         }
         $query = http_build_query($queryParams);
+        $query = preg_replace('/%5B\d+%5D/', '%5B%5D', $query);
         return $uri . ($query ? '?' . $query : '');
     }
 

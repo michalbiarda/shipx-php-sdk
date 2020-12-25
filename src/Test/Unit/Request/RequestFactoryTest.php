@@ -21,6 +21,7 @@ use MB\ShipXSDK\Test\Unit\Stub\MethodWithoutPayload;
 use MB\ShipXSDK\Test\Unit\Stub\MethodWithoutUriParams;
 use MB\ShipXSDK\Test\Unit\Stub\MethodWithPaginatedResults;
 use MB\ShipXSDK\Test\Unit\Stub\MethodWithPayload;
+use MB\ShipXSDK\Test\Unit\Stub\MethodWithQueryParams;
 use MB\ShipXSDK\Test\Unit\Stub\MethodWithSortableResults;
 use MB\ShipXSDK\Test\Unit\Stub\MethodWithUriParams;
 use MB\ShipXSDK\Test\Unit\Stub\ModelWithFooBarSimpleProperties;
@@ -217,6 +218,14 @@ class RequestFactoryTest extends TestCase
             [
                 new MethodWithFilterableResults(),
                 ['boo' => 'value']
+            ],
+            [
+                new MethodWithQueryParams(),
+                ['foo' => 'a']
+            ],
+            [
+                new MethodWithQueryParams(),
+                ['foo' => 'a', 'bar' => 'b', 'gar' => 'c']
             ]
         ];
     }
@@ -259,6 +268,16 @@ class RequestFactoryTest extends TestCase
                 new MethodWithPaginatedResults(),
                 ['page' => '10'],
                 '?page=10'
+            ],
+            [
+                new MethodWithQueryParams(),
+                ['foo' => 'a', 'bar' => 'b', 'boo' => 'c'],
+                '?foo=a&bar=b&boo=c'
+            ],
+            [
+                new MethodWithQueryParams(),
+                ['foo' => 'a', 'bar' => ['b', 'c']],
+                '?foo=a&bar%5B%5D=b&bar%5B%5D=c'
             ]
         ];
     }
