@@ -8,10 +8,10 @@ namespace MB\ShipXSDK\Form;
 
 use MB\ShipXSDK\DataTransferObject\DataTransferObject;
 
-class SelectShipmentOffers extends DataTransferObject
+class ShipmentOffersCollection extends DataTransferObject
 {
     /**
-     * @var \MB\ShipXSDK\Form\SelectShipmentOffers\Item[]
+     * @var \MB\ShipXSDK\Form\ShipmentOfferItem[]
      */
     public array $shipments;
 }

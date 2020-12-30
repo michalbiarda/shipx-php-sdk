@@ -12,7 +12,7 @@ use MB\ShipXSDK\Method\WithAuthorizationInterface;
 use MB\ShipXSDK\Method\WithJsonRequestInterface;
 use MB\ShipXSDK\Request\Request;
 
-class SelectOffers implements
+class BuyBulk implements
     MethodInterface,
     WithJsonRequestInterface,
     WithAuthorizationInterface
@@ -24,7 +24,7 @@ class SelectOffers implements
 
     public function getUriTemplate(): string
     {
-        return '/v1/organizations/:organization_id/shipments/select_offers';
+        return '/v1/organizations/:organization_id/shipments/bulk_buy';
     }
 
     public function getRequestPayloadModelName(): string

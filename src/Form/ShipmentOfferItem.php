@@ -4,11 +4,11 @@
  * See LICENSE.txt for license details.
  */
 
-namespace MB\ShipXSDK\Form\SelectShipmentOffers;
+namespace MB\ShipXSDK\Form;
 
 use MB\ShipXSDK\DataTransferObject\DataTransferObject;
 
-class Item extends DataTransferObject
+class ShipmentOfferItem extends DataTransferObject
 {
     public int $id;
 
