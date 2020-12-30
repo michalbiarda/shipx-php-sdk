@@ -6,18 +6,15 @@
 
 namespace MB\ShipXSDK\Method\Shipment;
 
-use MB\ShipXSDK\Form\SelectShipmentOffer;
+use MB\ShipXSDK\Form\SelectShipmentOffers;
 use MB\ShipXSDK\Method\MethodInterface;
 use MB\ShipXSDK\Method\WithAuthorizationInterface;
 use MB\ShipXSDK\Method\WithJsonRequestInterface;
-use MB\ShipXSDK\Method\WithJsonResponseInterface;
-use MB\ShipXSDK\Model\Shipment;
 use MB\ShipXSDK\Request\Request;
 
-class SelectOffer implements
+class SelectOffers implements
     MethodInterface,
     WithJsonRequestInterface,
-    WithJsonResponseInterface,
     WithAuthorizationInterface
 {
     public function getRequestMethod(): string
@@ -27,16 +24,11 @@ class SelectOffer implements
 
     public function getUriTemplate(): string
     {
-        return '/v1/shipments/:shipment_id/select_offer';
+        return '/v1/organizations/:organization_id/shipments/select_offers';
     }
 
     public function getRequestPayloadModelName(): string
     {
-        return SelectShipmentOffer::class;
-    }
-
-    public function getResponsePayloadModelName(): string
-    {
-        return Shipment::class;
+        return SelectShipmentOffers::class;
     }
 }
