@@ -14,5 +14,7 @@ class ShipmentSimple extends DataTransferObject
 
     public int $id;
 
-    public string $tracking_number;
+    public ?string $tracking_number;
+
+    public ?string $status;
 }

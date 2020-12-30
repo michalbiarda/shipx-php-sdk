@@ -42,9 +42,9 @@ class Shipment extends DataTransferObject
      */
     public ?int $created_by_id;
 
-    public ?Cod $cod;
+    public ?Price $cod;
 
-    public ?Insurance $insurance;
+    public ?Price $insurance;
 
     /**
      * @var string[]|null

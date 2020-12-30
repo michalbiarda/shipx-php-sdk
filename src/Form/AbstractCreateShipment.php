@@ -7,8 +7,7 @@
 namespace MB\ShipXSDK\Form;
 
 use MB\ShipXSDK\DataTransferObject\DataTransferObject;
-use MB\ShipXSDK\Model\Cod;
-use MB\ShipXSDK\Model\Insurance;
+use MB\ShipXSDK\Model\Price;
 use MB\ShipXSDK\Model\Receiver;
 use MB\ShipXSDK\Model\Sender;
 use MB\ShipXSDK\Model\ShipmentCustomAttributes;
@@ -26,9 +25,9 @@ abstract class AbstractCreateShipment extends DataTransferObject
 
     public ?ShipmentCustomAttributes $custom_attributes;
 
-    public ?Cod $cod;
+    public ?Price $cod;
 
-    public ?Insurance $insurance;
+    public ?Price $insurance;
 
     public ?string $reference;
 
