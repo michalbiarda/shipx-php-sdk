@@ -1,8 +1,11 @@
 <?php
+
 /**
  * Copyright © Michał Biarda. All rights reserved.
  * See LICENSE.txt for license details.
  */
+
+declare(strict_types=1);
 
 namespace MB\ShipXSDK\Test\Unit\Response;
 
@@ -67,7 +70,9 @@ class HttpResponseProcessorTest extends TestCase
 
     public function testProcessReturnsNullIfAllDefinedProcessesReturnNull(): void
     {
-        $httpResponseProcessor = new HttpResponseProcessor([new ProcessorReturningNull(), new ProcessorReturningNull()]);
+        $httpResponseProcessor = new HttpResponseProcessor(
+            [new ProcessorReturningNull(), new ProcessorReturningNull()]
+        );
         $result = $httpResponseProcessor->process($this->methodMock, $this->httpResponseMock);
         $this->assertNull($result);
     }

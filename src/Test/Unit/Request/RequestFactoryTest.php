@@ -1,8 +1,11 @@
 <?php
+
 /**
  * Copyright © Michał Biarda. All rights reserved.
  * See LICENSE.txt for license details.
  */
+
+declare(strict_types=1);
 
 namespace MB\ShipXSDK\Test\Unit\Request;
 
@@ -104,8 +107,7 @@ class RequestFactoryTest extends TestCase
         MethodInterface $methodStub,
         array $uriParams,
         string $expectedUri
-    ): void
-    {
+    ): void {
         $result = $this->requestFactory->create($methodStub, $uriParams);
         $this->assertSame($expectedUri, $result->getUri());
     }
@@ -117,8 +119,7 @@ class RequestFactoryTest extends TestCase
         MethodInterface $methodStub,
         ?DataTransferObject $payloadObject,
         ?array $expectedPayload
-    ): void
-    {
+    ): void {
         $result = $this->requestFactory->create($methodStub, [], [], $payloadObject);
         $this->assertSame($expectedPayload, $result->getPayload());
     }
@@ -130,8 +131,7 @@ class RequestFactoryTest extends TestCase
         MethodInterface $methodStub,
         ?string $authToken,
         ?array $expectedHeaders
-    ): void
-    {
+    ): void {
         $result = $this->requestFactory->create($methodStub, [], [], null, $authToken);
         $this->assertSame($expectedHeaders, $result->getHeaders());
     }
@@ -142,8 +142,7 @@ class RequestFactoryTest extends TestCase
     public function testCreateThrowsExceptionWhenIncorrectQueryParamsWereUsed(
         MethodInterface $method,
         array $queryParams
-    ): void
-    {
+    ): void {
         $this->expectException(InvalidQueryParamsException::class);
         $this->requestFactory->create($method, [], $queryParams);
     }
@@ -155,8 +154,7 @@ class RequestFactoryTest extends TestCase
         MethodInterface $method,
         array $queryParams,
         string $expectedUriSuffix
-    ): void
-    {
+    ): void {
         $result = $this->requestFactory->create($method, [], $queryParams);
         $this->assertStringEndsWith($expectedUriSuffix, $result->getUri());
     }
@@ -250,7 +248,8 @@ class RequestFactoryTest extends TestCase
                 new MethodWithSortableResults(),
                 [
                     WithSortableResultsInterface::SORT_BY_QUERY_PARAM => 'foo',
-                    WithSortableResultsInterface::SORT_ORDER_QUERY_PARAM => WithSortableResultsInterface::SORT_ORDER_DESC
+                    WithSortableResultsInterface::SORT_ORDER_QUERY_PARAM
+                        => WithSortableResultsInterface::SORT_ORDER_DESC
                 ],
                 '?sort_by=foo&sort_order=desc'
             ],

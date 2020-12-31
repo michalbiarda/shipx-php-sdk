@@ -1,8 +1,11 @@
 <?php
+
 /**
  * Copyright © Michał Biarda. All rights reserved.
  * See LICENSE.txt for license details.
  */
+
+declare(strict_types=1);
 
 namespace MB\ShipXSDK\DataTransferObject;
 
@@ -22,7 +25,8 @@ class ValueCaster extends OriginalValueCaster
                 if ($type === DateTime::class) {
                     try {
                         return new DateTime($value);
-                    } catch (Exception $e) {}
+                    } catch (Exception $e) {
+                    }
                 }
             }
         }

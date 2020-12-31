@@ -1,8 +1,11 @@
 <?php
+
 /**
  * Copyright © Michał Biarda. All rights reserved.
  * See LICENSE.txt for license details.
  */
+
+declare(strict_types=1);
 
 namespace MB\ShipXSDK\Client;
 
@@ -66,8 +69,7 @@ class Client
         array $uriParams = [],
         array $queryParams = [],
         ?DataTransferObject $payload = null
-    ): Response
-    {
+    ): Response {
         $request = $this->requestFactory->create(
             $method,
             $uriParams,
@@ -81,18 +83,18 @@ class Client
                 $this->baseUri . $request->getUri(),
                 $this->buildOptions($request)
             );
-        } catch (ClientException|ServerException $e) {
+        } catch (ClientException | ServerException $e) {
             $httpResponse = $e->getResponse();
         }
         return $this->responseFactory->create($method, $httpResponse);
     }
 
-    public function getLastHttpRequest():? RequestInterface
+    public function getLastHttpRequest(): ?RequestInterface
     {
         return $this->lastHttpRequest;
     }
 
-    public function getLastHttpResponse():? ResponseInterface
+    public function getLastHttpResponse(): ?ResponseInterface
     {
         return $this->lastHttpResponse;
     }

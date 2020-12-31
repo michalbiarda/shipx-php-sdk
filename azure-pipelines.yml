@@ -34,3 +34,6 @@ steps:
     testResultsFiles: 'junit-report.xml'
     failTaskOnFailedTests: true
   displayName: 'Publish unit tests results'
+
+- script: ./vendor/bin/phpcs --standard=./phpcs.ruleset.xml ./src/
+  displayName: 'Run PHP code sniffer'

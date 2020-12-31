@@ -1,8 +1,11 @@
 <?php
+
 /**
  * Copyright © Michał Biarda. All rights reserved.
  * See LICENSE.txt for license details.
  */
+
+declare(strict_types=1);
 
 namespace MB\ShipXSDK\Request;
 
@@ -25,8 +28,7 @@ class RequestFactory
         array $queryParams = [],
         ?DataTransferObject $payload = null,
         ?string $authToken = null
-    ): Request
-    {
+    ): Request {
         return new Request(
             $method->getRequestMethod(),
             $this->buildUri($method, $uriParams, $queryParams),
@@ -82,13 +84,15 @@ class RequestFactory
                         $this->throwInvalidQueryParamException($param);
                     }
                     /** @var $method WithSortableResultsInterface */
-                    if (!in_array(
-                        $value,
-                        [
+                    if (
+                        !in_array(
+                            $value,
+                            [
                             WithSortableResultsInterface::SORT_ORDER_ASC,
                             WithSortableResultsInterface::SORT_ORDER_DESC
-                        ]
-                    )) {
+                            ]
+                        )
+                    ) {
                         $this->throwInvalidQueryParamException($param, $value);
                     }
                     break;
@@ -133,7 +137,7 @@ class RequestFactory
         if ($method instanceof WithJsonRequestInterface) {
             if (is_null($payload)) {
                 throw new InvalidArgumentException('Payload cannot be null.');
-            } else if (get_class($payload) !== $method->getRequestPayloadModelName()) {
+            } elseif (get_class($payload) !== $method->getRequestPayloadModelName()) {
                 throw new InvalidArgumentException(
                     sprintf('Payload must be an instance of "%s".', $method->getRequestPayloadModelName())
                 );
