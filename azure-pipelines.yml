@@ -25,5 +25,12 @@ steps:
 - script: composer install --no-interaction --prefer-dist
   displayName: 'composer install'
 
-- script: ./vendor/phpunit/phpunit/phpunit --no-configuration ./src/Test/Unit/
-  displayName: 'Run tests with phpunit'
+- script: ./vendor/bin/phpunit --no-configuration --log-junit $(System.DefaultWorkingDirectory)/junit-report.xml ./src/Test/Unit/
+  displayName: 'Run unit tests with phpunit'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: 'junit-report.xml'
+    failTaskOnFailedTests: true
+  displayName: 'Publish unit tests results'
