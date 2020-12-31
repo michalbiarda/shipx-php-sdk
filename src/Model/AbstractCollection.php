@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace MB\ShipXSDK\DataTransferObject;
+namespace MB\ShipXSDK\Model;
 
 class AbstractCollection extends DataTransferObject
 {

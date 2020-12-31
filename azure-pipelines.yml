@@ -39,4 +39,7 @@ steps:
   displayName: 'Run PHP code sniffer'
 
 - script: ./vendor/bin/phpmd ./src/ ansi cleancode,codesize,unusedcode
-  displayName: 'Run PHP mess detector'
+  displayName: 'Run PHP mess detector for basic rulesets'
+
+- script: ./vendor/bin/phpmd ./src/ ansi controversial --exclude /Model/*,/Form/*
+  displayName: 'Run PHP mess detector for controversial ruleset'
