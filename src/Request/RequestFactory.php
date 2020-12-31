@@ -186,13 +186,13 @@ class RequestFactory
         }
         /** @var $method WithSortableResultsInterface */
         if (
-        !in_array(
-            $value,
-            [
-                WithSortableResultsInterface::SORT_ORDER_ASC,
-                WithSortableResultsInterface::SORT_ORDER_DESC
-            ]
-        )
+            !in_array(
+                $value,
+                [
+                    WithSortableResultsInterface::SORT_ORDER_ASC,
+                    WithSortableResultsInterface::SORT_ORDER_DESC
+                ]
+            )
         ) {
             $this->throwInvalidQueryParamException($param, $value);
         }
