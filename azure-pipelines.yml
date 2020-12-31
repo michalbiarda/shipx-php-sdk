@@ -38,7 +38,7 @@ steps:
 - script: ./vendor/bin/phpcs --standard=./phpcs.ruleset.xml ./src/
   displayName: 'Run PHP code sniffer'
 
-- script: ./vendor/bin/phpmd ./src/ ansi cleancode,codesize,unusedcode
+- script: ./vendor/bin/phpmd ./src/ ansi cleancode,codesize,unusedcode,design
   displayName: 'Run PHP mess detector for basic rulesets'
 
 - script: ./vendor/bin/phpmd ./src/ ansi controversial --exclude /Model/*,/Form/*

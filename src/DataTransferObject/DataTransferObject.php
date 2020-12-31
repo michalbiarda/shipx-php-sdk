@@ -15,6 +15,9 @@ use Spatie\DataTransferObject\DataTransferObjectError;
 use Spatie\DataTransferObject\FieldValidator;
 use Spatie\DataTransferObject\ValueCaster as OriginalValueCaster;
 
+/**
+ * @SuppressWarnings(PHPMD.NumberOfChildren)
+ */
 class DataTransferObject extends OriginalDataTransferObject
 {
     protected bool $ignoreMissing = true;

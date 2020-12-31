@@ -37,6 +37,7 @@ use Psr\Http\Message\ResponseInterface;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class HttpResponseProcessorTest extends TestCase
 {

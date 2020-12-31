@@ -17,8 +17,11 @@ class ResponseFactory
 {
     private HttpResponseProcessor $httpResponseProcessor;
 
-    public function __construct(HttpResponseProcessor $httpResponseProcessor)
+    public function __construct(?HttpResponseProcessor $httpResponseProcessor = null)
     {
+        if (is_null($httpResponseProcessor)) {
+            $httpResponseProcessor = new HttpResponseProcessor();
+        }
         $this->httpResponseProcessor = $httpResponseProcessor;
     }
 

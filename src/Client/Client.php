@@ -10,16 +10,12 @@ declare(strict_types=1);
 namespace MB\ShipXSDK\Client;
 
 use GuzzleHttp\Client as HttpClient;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\ServerException;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Middleware;
+use GuzzleHttp\Exception\BadResponseException;
 use MB\ShipXSDK\DataTransferObject\DataTransferObject;
 use MB\ShipXSDK\Method\MethodInterface;
 use MB\ShipXSDK\Method\WithAuthorizationInterface;
 use MB\ShipXSDK\Request\Request;
 use MB\ShipXSDK\Request\RequestFactory;
-use MB\ShipXSDK\Response\HttpResponseProcessor;
 use MB\ShipXSDK\Response\Response;
 use MB\ShipXSDK\Response\ResponseFactory;
 use Psr\Http\Message\RequestInterface;
@@ -31,11 +27,13 @@ class Client
 
     private ?string $authToken;
 
-    private ?HttpClient $httpClient;
+    private HttpClient $httpClient;
 
-    private ?RequestFactory $requestFactory;
+    private RequestFactory $requestFactory;
 
-    private ?ResponseFactory $responseFactory;
+    private ResponseFactory $responseFactory;
+
+    private OptionsFactory $optionsFactory;
 
     private ?RequestInterface $lastHttpRequest;
 
@@ -46,7 +44,8 @@ class Client
         ?string $authToken = null,
         ?HttpClient $httpClient = null,
         ?RequestFactory $requestFactory = null,
-        ?ResponseFactory $responseFactory = null
+        ?ResponseFactory $responseFactory = null,
+        ?OptionsFactory $optionsFactory = null
     ) {
         $this->baseUri = $baseUri;
         $this->authToken = $authToken;
@@ -57,11 +56,15 @@ class Client
             $requestFactory = new RequestFactory();
         }
         if (is_null($responseFactory)) {
-            $responseFactory = new ResponseFactory(new HttpResponseProcessor());
+            $responseFactory = new ResponseFactory();
+        }
+        if (is_null($optionsFactory)) {
+            $optionsFactory = new OptionsFactory();
         }
         $this->httpClient = $httpClient;
         $this->requestFactory = $requestFactory;
         $this->responseFactory = $responseFactory;
+        $this->optionsFactory = $optionsFactory;
     }
 
     public function callMethod(
@@ -83,7 +86,7 @@ class Client
                 $this->baseUri . $request->getUri(),
                 $this->buildOptions($request)
             );
-        } catch (ClientException | ServerException $e) {
+        } catch (BadResponseException $e) {
             $httpResponse = $e->getResponse();
         }
         return $this->responseFactory->create($method, $httpResponse);
@@ -99,30 +102,22 @@ class Client
         return $this->lastHttpResponse;
     }
 
-    /**
-     * @param Request $request
-     * @return array
-     * @SuppressWarnings(PHPMD.StaticAccess)
-     */
     private function buildOptions(Request $request): array
     {
-        $options = [];
-        if ($request->getHeaders()) {
-            $options['headers'] = $request->getHeaders();
-        }
-        if ($request->getPayload()) {
-            $options['json'] = $request->getPayload();
-        }
-        $stack = HandlerStack::create();
-        $stack->push(Middleware::mapRequest(function (RequestInterface $request) {
-            $this->lastHttpRequest = $request;
-            return $request;
-        }));
-        $stack->push(Middleware::mapResponse(function (ResponseInterface $response) {
-            $this->lastHttpResponse = $response;
-            return $response;
-        }));
-        $options['handler'] = $stack;
-        return $options;
+        return $this->optionsFactory->create(
+            $request,
+            [
+                function (RequestInterface $request) {
+                    $this->lastHttpRequest = $request;
+                    return $request;
+                }
+            ],
+            [
+                function (ResponseInterface $response) {
+                    $this->lastHttpResponse = $response;
+                    return $response;
+                }
+            ]
+        );
     }
 }
