@@ -12,6 +12,9 @@ namespace MB\ShipXSDK\Model;
 use DateTime;
 use MB\ShipXSDK\DataTransferObject\DataTransferObject;
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyFields)
+ */
 class AddressBook extends DataTransferObject
 {
     public ?int $id;

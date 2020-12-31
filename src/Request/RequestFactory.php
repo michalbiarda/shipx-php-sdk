@@ -55,71 +55,7 @@ class RequestFactory
             }
             $uri = str_replace(':' . $param, $uriParams[$param], $uri);
         }
-        $requiredParams = [];
-        if ($method instanceof WithQueryParamsInterface) {
-            /** @var WithQueryParamsInterface $method */
-            $requiredParams = array_merge($requiredParams, $method->getRequiredQueryParams());
-        }
-        $missingRequiredParams = array_diff($requiredParams, array_keys($queryParams));
-        if (!empty($missingRequiredParams)) {
-            throw new InvalidQueryParamsException(sprintf(
-                'Values for the following query params are missing: %s',
-                join(', ', $missingRequiredParams)
-            ));
-        }
-        foreach ($queryParams as $param => $value) {
-            switch ($param) {
-                case WithSortableResultsInterface::SORT_BY_QUERY_PARAM:
-                    if (!$method instanceof WithSortableResultsInterface) {
-                        $this->throwInvalidQueryParamException($param);
-                    }
-                    /** @var $method WithSortableResultsInterface */
-                    if (!in_array($value, $method->getSortableFields())) {
-                        $this->throwInvalidQueryParamException($param, $value);
-                    }
-                    break;
-                case WithSortableResultsInterface::SORT_ORDER_QUERY_PARAM:
-                    if (!$method instanceof WithSortableResultsInterface) {
-                        $this->throwInvalidQueryParamException($param);
-                    }
-                    /** @var $method WithSortableResultsInterface */
-                    if (
-                        !in_array(
-                            $value,
-                            [
-                            WithSortableResultsInterface::SORT_ORDER_ASC,
-                            WithSortableResultsInterface::SORT_ORDER_DESC
-                            ]
-                        )
-                    ) {
-                        $this->throwInvalidQueryParamException($param, $value);
-                    }
-                    break;
-                case WithPaginatedResultsInterface::PAGE_QUERY_PARAM:
-                    if (!$method instanceof WithPaginatedResultsInterface) {
-                        $this->throwInvalidQueryParamException($param);
-                    }
-                    break;
-                default:
-                    $validParams = [];
-                    if ($method instanceof WithFilterableResultsInterface) {
-                        /** @var $method WithFilterableResultsInterface */
-                        $validParams = array_merge($validParams, $method->getFilters());
-                    }
-                    if ($method instanceof WithQueryParamsInterface) {
-                        /** @var $method WithQueryParamsInterface */
-                        $validParams = array_merge(
-                            $validParams,
-                            $method->getOptionalQueryParams(),
-                            $method->getRequiredQueryParams()
-                        );
-                    }
-                    if (!in_array($param, $validParams)) {
-                        $this->throwInvalidQueryParamException($param);
-                    }
-                    break;
-            }
-        }
+        $this->validateQueryParams($queryParams, $method);
         $query = http_build_query($queryParams);
         $query = preg_replace('/%5B\d+%5D/', '%5B%5D', $query);
         return $uri . ($query ? '?' . $query : '');
@@ -193,5 +129,99 @@ class RequestFactory
     {
         preg_match_all('/:([a-z_]+)/', $uriTemplate, $matches);
         return $matches[1];
+    }
+
+    private function validateQueryParams(array $queryParams, MethodInterface $method): void
+    {
+        $this->validateRequiredParams($method, $queryParams);
+        foreach ($queryParams as $param => $value) {
+            switch ($param) {
+                case WithSortableResultsInterface::SORT_BY_QUERY_PARAM:
+                    $this->validateSortByQueryParam($method, $param, $value);
+                    break;
+                case WithSortableResultsInterface::SORT_ORDER_QUERY_PARAM:
+                    $this->validateSortOrderQueryParam($method, $param, $value);
+                    break;
+                case WithPaginatedResultsInterface::PAGE_QUERY_PARAM:
+                    $this->validatePageQueryParam($method, $param);
+                    break;
+                default:
+                    $this->validateDefaultQueryParam($method, $param);
+                    break;
+            }
+        }
+    }
+
+    private function validateRequiredParams(MethodInterface $method, array $queryParams): void
+    {
+        $requiredParams = [];
+        if ($method instanceof WithQueryParamsInterface) {
+            /** @var WithQueryParamsInterface $method */
+            $requiredParams = array_merge($requiredParams, $method->getRequiredQueryParams());
+        }
+        $missingRequiredParams = array_diff($requiredParams, array_keys($queryParams));
+        if (!empty($missingRequiredParams)) {
+            throw new InvalidQueryParamsException(sprintf(
+                'Values for the following query params are missing: %s',
+                join(', ', $missingRequiredParams)
+            ));
+        }
+    }
+
+    private function validateSortByQueryParam(MethodInterface $method, string $param, $value): void
+    {
+        if (!$method instanceof WithSortableResultsInterface) {
+            $this->throwInvalidQueryParamException($param);
+        }
+        /** @var $method WithSortableResultsInterface */
+        if (!in_array($value, $method->getSortableFields())) {
+            $this->throwInvalidQueryParamException($param, $value);
+        }
+    }
+
+    private function validateSortOrderQueryParam(MethodInterface $method, string $param, $value): void
+    {
+        if (!$method instanceof WithSortableResultsInterface) {
+            $this->throwInvalidQueryParamException($param);
+        }
+        /** @var $method WithSortableResultsInterface */
+        if (
+        !in_array(
+            $value,
+            [
+                WithSortableResultsInterface::SORT_ORDER_ASC,
+                WithSortableResultsInterface::SORT_ORDER_DESC
+            ]
+        )
+        ) {
+            $this->throwInvalidQueryParamException($param, $value);
+        }
+    }
+
+    private function validatePageQueryParam(MethodInterface $method, string $param): void
+    {
+        if (!$method instanceof WithPaginatedResultsInterface) {
+            $this->throwInvalidQueryParamException($param);
+        }
+    }
+
+    private function validateDefaultQueryParam(MethodInterface $method, string $param): void
+    {
+        $validParams = [];
+        if ($method instanceof WithFilterableResultsInterface) {
+            /** @var $method WithFilterableResultsInterface */
+            $validParams = array_merge($validParams, $method->getFilters());
+        }
+        if ($method instanceof WithQueryParamsInterface) {
+            /** @var $method WithQueryParamsInterface */
+            $validParams = array_merge(
+                $validParams,
+                $method->getOptionalQueryParams(),
+                $method->getRequiredQueryParams()
+            );
+        }
+        if (!in_array($param, $validParams)) {
+            $this->throwInvalidQueryParamException($param);
+        }
     }
 }

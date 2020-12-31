@@ -31,6 +31,9 @@ use MB\ShipXSDK\Test\Unit\Stub\ModelWithFooBarSimpleProperties;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ */
 class RequestFactoryTest extends TestCase
 {
     private RequestFactory $requestFactory;

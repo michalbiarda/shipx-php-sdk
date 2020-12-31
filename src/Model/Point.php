@@ -11,6 +11,9 @@ namespace MB\ShipXSDK\Model;
 
 use MB\ShipXSDK\DataTransferObject\DataTransferObject;
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyFields)
+ */
 class Point extends DataTransferObject
 {
     public string $href;

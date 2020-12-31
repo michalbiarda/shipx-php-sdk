@@ -12,6 +12,9 @@ namespace MB\ShipXSDK\Model;
 use DateTime;
 use MB\ShipXSDK\DataTransferObject\DataTransferObject;
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyFields)
+ */
 class Shipment extends DataTransferObject
 {
     public string $href;
