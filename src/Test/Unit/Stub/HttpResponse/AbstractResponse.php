@@ -12,6 +12,9 @@ namespace MB\ShipXSDK\Test\Unit\Stub\HttpResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
+/**
+ * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+ */
 abstract class AbstractResponse implements ResponseInterface
 {
     public function getProtocolVersion()

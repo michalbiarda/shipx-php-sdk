@@ -11,6 +11,9 @@ namespace MB\ShipXSDK\Test\Unit\Stub\HttpResponse;
 
 use Psr\Http\Message\StreamInterface;
 
+/**
+ * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+ */
 abstract class AbstractStreamWithContents implements StreamInterface
 {
     public function __toString()
