@@ -99,6 +99,11 @@ class Client
         return $this->lastHttpResponse;
     }
 
+    /**
+     * @param Request $request
+     * @return array
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     private function buildOptions(Request $request): array
     {
         $options = [];

@@ -52,9 +52,8 @@ class RequestFactory
         foreach ($uriParamsFromTemplate as $param) {
             if (!array_key_exists($param, $uriParams)) {
                 throw new InvalidArgumentException(sprintf('Value for "%s" param is missing.', $param));
-            } else {
-                $uri = str_replace(':' . $param, $uriParams[$param], $uri);
             }
+            $uri = str_replace(':' . $param, $uriParams[$param], $uri);
         }
         $requiredParams = [];
         if ($method instanceof WithQueryParamsInterface) {
@@ -133,7 +132,6 @@ class RequestFactory
      */
     private function buildPayloadArray(MethodInterface $method, ?DataTransferObject $payload): ?array
     {
-        $payloadArray = null;
         if ($method instanceof WithJsonRequestInterface) {
             if (is_null($payload)) {
                 throw new InvalidArgumentException('Payload cannot be null.');
@@ -142,13 +140,12 @@ class RequestFactory
                     sprintf('Payload must be an instance of "%s".', $method->getRequestPayloadModelName())
                 );
             }
-            $payloadArray = $payload->toArray();
-        } else {
-            if (!is_null($payload)) {
-                throw new InvalidArgumentException('Payload must be null.');
-            }
+            return $payload->toArray();
         }
-        return $payloadArray;
+        if (!is_null($payload)) {
+            throw new InvalidArgumentException('Payload must be null.');
+        }
+        return null;
     }
 
     /**
@@ -159,15 +156,14 @@ class RequestFactory
     private function buildHeadersArray(MethodInterface $method, ?string $authToken): ?array
     {
         $headersArray = null;
-        if ($method instanceof WithAuthorizationInterface) {
-            if (is_null($authToken)) {
-                throw new InvalidArgumentException('Auth token cannot be null.');
-            }
+        if ($method instanceof WithAuthorizationInterface && is_null($authToken)) {
+            throw new InvalidArgumentException('Auth token cannot be null.');
+        }
+        if (!$method instanceof WithAuthorizationInterface && !is_null($authToken)) {
+            throw new InvalidArgumentException('Auth token must be null.');
+        }
+        if (!is_null($authToken)) {
             $headersArray['Authorization'] = 'Bearer ' . $authToken;
-        } else {
-            if (!is_null($authToken)) {
-                throw new InvalidArgumentException('Auth token must be null.');
-            }
         }
         return $headersArray;
     }
@@ -182,16 +178,16 @@ class RequestFactory
             throw new InvalidQueryParamsException(
                 sprintf('Query param "%s" is not allowed for this method.', $param)
             );
-        } else {
-            throw new InvalidQueryParamsException(
-                sprintf('Value "%s" is not allowed for param "%s" for this method.', $value, $param)
-            );
         }
+        throw new InvalidQueryParamsException(
+            sprintf('Value "%s" is not allowed for param "%s" for this method.', $value, $param)
+        );
     }
 
     /**
      * @param string $uriTemplate
      * @return string[]
+     * @SuppressWarnings(PHPMD.UndefinedVariable)
      */
     private function getUriParamsFromTemplate(string $uriTemplate): array
     {

@@ -27,11 +27,7 @@ class HttpResponseProcessor
 
     public function __construct(?array $processors = null)
     {
-        if (is_null($processors)) {
-            $this->processors = $this->getDefaultProcessors();
-        } else {
-            $this->processors = $processors;
-        }
+        $this->processors = $processors ?: $this->getDefaultProcessors();
     }
 
     public function process(MethodInterface $method, ResponseInterface $httpResponse): ?Response

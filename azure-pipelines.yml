@@ -37,3 +37,6 @@ steps:
 
 - script: ./vendor/bin/phpcs --standard=./phpcs.ruleset.xml ./src/
   displayName: 'Run PHP code sniffer'
+
+- script: ./vendor/bin/phpmd ./src/ ansi cleancode
+  displayName: 'Run PHP mess detector'
