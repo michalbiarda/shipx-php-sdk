@@ -49,7 +49,7 @@ class AddressBook extends DataTransferObject
 
     public ?string $preferred_dropoff_point;
 
-    public DateTime $created_at;
+    public ?DateTime $created_at;
 
-    public DateTime $updated_at;
+    public ?DateTime $updated_at;
 }

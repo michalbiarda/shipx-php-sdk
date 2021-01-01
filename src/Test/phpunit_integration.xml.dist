@@ -15,5 +15,6 @@
         <!-- Fill in with your ShipX API data -->
         <env name="SHIPX_BASE_URI" value="https://sandbox-api-shipx-pl.easypack24.net"/>
         <env name="SHIPX_AUTH_TOKEN" value=""/>
+        <env name="SHIPX_ORGANIZATION_ID" value=""/>
     </php>
 </phpunit>

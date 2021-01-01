@@ -17,7 +17,7 @@ use MB\ShipXSDK\Model\Point;
 use MB\ShipXSDK\Model\PointCollection;
 use PHPUnit\Framework\TestCase;
 
-class ReadPointsTest extends TestCase
+class PointsTest extends TestCase
 {
     private Client $client;
 

@@ -32,7 +32,7 @@ steps:
   displayName: 'Run PHP mess detector for basic rulesets'
 
 - script: ./vendor/bin/phpmd ./src/ ansi controversial,naming --exclude /Model/*,/Form/*
-  displayName: 'Run PHP mess detector for controversial ruleset'
+  displayName: 'Run PHP mess detector for other rulesets'
 
 - script: ./vendor/bin/phpunit --no-configuration --log-junit $(System.DefaultWorkingDirectory)/junit-unit-report.xml ./src/Test/Unit/
   displayName: 'Run unit tests with phpunit'
