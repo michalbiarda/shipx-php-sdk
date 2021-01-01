@@ -1,8 +1,11 @@
 <?php
+
 /**
  * Copyright © Michał Biarda. All rights reserved.
  * See LICENSE.txt for license details.
  */
+
+declare(strict_types=1);
 
 namespace MB\ShipXSDK\DataTransferObject;
 
@@ -12,11 +15,14 @@ use Spatie\DataTransferObject\DataTransferObjectError;
 use Spatie\DataTransferObject\FieldValidator;
 use Spatie\DataTransferObject\ValueCaster as OriginalValueCaster;
 
+/**
+ * @SuppressWarnings(PHPMD.NumberOfChildren)
+ */
 class DataTransferObject extends OriginalDataTransferObject
 {
     protected bool $ignoreMissing = true;
 
-    const CODE_INVALID_PARAMS = 1;
+    private const CODE_INVALID_PARAMS = 1;
 
     public function __construct(array $parameters = [])
     {

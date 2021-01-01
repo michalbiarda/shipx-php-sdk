@@ -1,8 +1,11 @@
 <?php
+
 /**
  * Copyright © Michał Biarda. All rights reserved.
  * See LICENSE.txt for license details.
  */
+
+declare(strict_types=1);
 
 namespace MB\ShipXSDK\Response;
 
@@ -24,14 +27,10 @@ class HttpResponseProcessor
 
     public function __construct(?array $processors = null)
     {
-        if (is_null($processors)) {
-            $this->processors = $this->getDefaultProcessors();
-        } else {
-            $this->processors = $processors;
-        }
+        $this->processors = $processors ?: $this->getDefaultProcessors();
     }
 
-    public function process(MethodInterface $method, ResponseInterface $httpResponse):? Response
+    public function process(MethodInterface $method, ResponseInterface $httpResponse): ?Response
     {
         foreach ($this->processors as $process) {
             if (!$process instanceof ProcessorInterface) {

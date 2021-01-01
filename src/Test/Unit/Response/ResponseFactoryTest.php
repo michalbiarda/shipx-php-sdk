@@ -1,8 +1,11 @@
 <?php
+
 /**
  * Copyright © Michał Biarda. All rights reserved.
  * See LICENSE.txt for license details.
  */
+
+declare(strict_types=1);
 
 namespace MB\ShipXSDK\Test\Unit\Response;
 
@@ -15,6 +18,9 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * @SuppressWarnings(PHPMD.LongVariable)
+ */
 class ResponseFactoryTest extends TestCase
 {
     private ResponseFactory $responseFactory;
@@ -22,13 +28,13 @@ class ResponseFactoryTest extends TestCase
     /**
      * @var MockObject|HttpResponseProcessor
      */
-    private MockObject $httpResponseProcessorMock;
+    private MockObject $responseProcessorMock;
 
     public function setUp(): void
     {
-        $this->httpResponseProcessorMock = $this->getMockBuilder(HttpResponseProcessor::class)
+        $this->responseProcessorMock = $this->getMockBuilder(HttpResponseProcessor::class)
             ->disableOriginalConstructor()->getMock();
-        $this->responseFactory = new ResponseFactory($this->httpResponseProcessorMock);
+        $this->responseFactory = new ResponseFactory($this->responseProcessorMock);
     }
 
     public function testCreateReturnsErrorResponseWhenThereIsNoOneFromProcessor(): void
@@ -49,7 +55,7 @@ class ResponseFactoryTest extends TestCase
         /** @var MockObject|ResponseInterface $httpResponseMock */
         $httpResponseMock = $this->getMockBuilder(ResponseInterface::class)->getMockForAbstractClass();
         $responseMock = $this->getMockBuilder(Response::class)->disableOriginalConstructor()->getMock();
-        $this->httpResponseProcessorMock->expects($this->any())->method('process')->willReturn($responseMock);
+        $this->responseProcessorMock->expects($this->any())->method('process')->willReturn($responseMock);
         $result = $this->responseFactory->create($methodMock, $httpResponseMock);
         $this->assertInstanceOf(Response::class, $result);
     }

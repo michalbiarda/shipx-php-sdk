@@ -1,12 +1,13 @@
 <?php
+
 /**
  * Copyright © Michał Biarda. All rights reserved.
  * See LICENSE.txt for license details.
  */
 
-namespace MB\ShipXSDK\Model;
+declare(strict_types=1);
 
-use MB\ShipXSDK\DataTransferObject\AbstractCollection;
+namespace MB\ShipXSDK\Model;
 
 class MpkCollection extends AbstractCollection
 {

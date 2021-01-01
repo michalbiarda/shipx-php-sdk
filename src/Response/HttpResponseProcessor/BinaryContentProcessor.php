@@ -1,8 +1,11 @@
 <?php
+
 /**
  * Copyright © Michał Biarda. All rights reserved.
  * See LICENSE.txt for license details.
  */
+
+declare(strict_types=1);
 
 namespace MB\ShipXSDK\Response\HttpResponseProcessor;
 
@@ -16,7 +19,8 @@ class BinaryContentProcessor implements ProcessorInterface
 {
     public function run(MethodInterface $method, ResponseInterface $httpResponse): ?Response
     {
-        if ($method instanceof WithBinaryResponseInterface &&
+        if (
+            $method instanceof WithBinaryResponseInterface &&
             $httpResponse->getStatusCode() === 200 &&
             $httpResponse->getHeaderLine('Content-Transfer-Encoding') === 'binary'
         ) {

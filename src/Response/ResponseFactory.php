@@ -1,8 +1,11 @@
 <?php
+
 /**
  * Copyright © Michał Biarda. All rights reserved.
  * See LICENSE.txt for license details.
  */
+
+declare(strict_types=1);
 
 namespace MB\ShipXSDK\Response;
 
@@ -12,16 +15,19 @@ use Psr\Http\Message\ResponseInterface;
 
 class ResponseFactory
 {
-    private HttpResponseProcessor $httpResponseProcessor;
+    private HttpResponseProcessor $responseProcessor;
 
-    public function __construct(HttpResponseProcessor $httpResponseProcessor)
+    public function __construct(?HttpResponseProcessor $responseProcessor = null)
     {
-        $this->httpResponseProcessor = $httpResponseProcessor;
+        if (is_null($responseProcessor)) {
+            $responseProcessor = new HttpResponseProcessor();
+        }
+        $this->responseProcessor = $responseProcessor;
     }
 
     public function create(MethodInterface $method, ResponseInterface $httpResponse): Response
     {
-        $response = $this->httpResponseProcessor->process($method, $httpResponse);
+        $response = $this->responseProcessor->process($method, $httpResponse);
         return $response ?: new Response(false, new Error([
             'status' => -1,
             'error' => 'unprocessed_response',
