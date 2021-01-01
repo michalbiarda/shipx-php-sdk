@@ -11,6 +11,7 @@ namespace MB\ShipXSDK\Test\Integration\Client;
 
 use MB\ShipXSDK\Client\Client;
 use RuntimeException;
+
 use function getenv;
 
 class ClientFactory

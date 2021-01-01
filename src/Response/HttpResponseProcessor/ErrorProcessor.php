@@ -30,8 +30,7 @@ class ErrorProcessor extends AbstractJsonContentProcessor
         MethodInterface $method,
         array $data,
         ResponseInterface $httpResponse
-    ): ?DataTransferObject
-    {
+    ): ?DataTransferObject {
         if ($httpResponse->getStatusCode() === 200) {
             // This handles inconsistency in ShipX API. Some errors have HTTP status code 200 and error data in body.
             if (isset($data['status']) && $data['status'] === 400 && isset($data['key']) && isset($data['error'])) {

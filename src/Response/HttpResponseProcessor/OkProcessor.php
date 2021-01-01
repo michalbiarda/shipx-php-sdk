@@ -31,8 +31,7 @@ class OkProcessor extends AbstractJsonContentProcessor
         MethodInterface $method,
         array $data,
         ResponseInterface $httpResponse
-    ): ?DataTransferObject
-    {
+    ): ?DataTransferObject {
         if (!$method instanceof WithJsonResponseInterface) {
             return null;
         }
