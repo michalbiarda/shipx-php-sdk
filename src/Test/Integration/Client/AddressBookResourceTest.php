@@ -19,12 +19,13 @@ use MB\ShipXSDK\Model\Address;
 use MB\ShipXSDK\Model\AddressBook;
 use MB\ShipXSDK\Model\AddressBookCollection;
 use MB\ShipXSDK\Model\Error;
+use MB\ShipXSDK\Test\Integration\Config;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @SuppressWarnings(PHPMD.StaticAccess)
  */
-class AddressBookTest extends TestCase
+class AddressBookResourceTest extends TestCase
 {
     private Client $client;
 

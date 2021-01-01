@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace MB\ShipXSDK\Test\Integration\Client;
+namespace MB\ShipXSDK\Test\Integration;
 
 use RuntimeException;
 

@@ -17,7 +17,7 @@ use MB\ShipXSDK\Model\Point;
 use MB\ShipXSDK\Model\PointCollection;
 use PHPUnit\Framework\TestCase;
 
-class PointsTest extends TestCase
+class PointResourceTest extends TestCase
 {
     private Client $client;
 
@@ -26,7 +26,7 @@ class PointsTest extends TestCase
         $this->client = (new ClientFactory())->create(false);
     }
 
-    public function testPointReadSuccessfulCall()
+    public function testReadSuccessfulCall(): void
     {
         $response = $this->client->callMethod(new Read(), ['name' => 'AND01A']);
         $this->assertTrue($response->getSuccess());
@@ -36,7 +36,7 @@ class PointsTest extends TestCase
         $this->assertSame('AND01A', $payload->name);
     }
 
-    public function testPointReadFailedCall()
+    public function testReadFailedCall(): void
     {
         $response = $this->client->callMethod(new Read(), ['name' => 'FAIL01']);
         $this->assertFalse($response->getSuccess());
@@ -44,7 +44,7 @@ class PointsTest extends TestCase
         $this->assertInstanceOf(Error::class, $payload);
     }
 
-    public function testPointGetListSuccessfulCall()
+    public function testGetListSuccessfulCall(): void
     {
         $response = $this->client->callMethod(
             new GetList(),
@@ -63,7 +63,7 @@ class PointsTest extends TestCase
         $this->assertSame('AND01A', $payload->items[1]->name);
     }
 
-    public function testPointGetListFailedCall()
+    public function testGetListFailedCall(): void
     {
         $response = $this->client->callMethod(new GetList(), [], ['limit' => -1]);
         $this->assertFalse($response->getSuccess());
