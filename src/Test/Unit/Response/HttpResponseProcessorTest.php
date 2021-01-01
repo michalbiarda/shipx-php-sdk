@@ -59,34 +59,34 @@ class HttpResponseProcessorTest extends TestCase
 
     public function testProcessReturnsNullIfNoProcessesAreDefined(): void
     {
-        $httpResponseProcessor = new HttpResponseProcessor([]);
-        $result = $httpResponseProcessor->process($this->methodMock, $this->httpResponseMock);
+        $responseProcessor = new HttpResponseProcessor([]);
+        $result = $responseProcessor->process($this->methodMock, $this->httpResponseMock);
         $this->assertNull($result);
     }
 
     public function testProcessThrowsExceptionIfNthObjectInProcessesArrayIsNotAProcess(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $nonExistentProcessMock = $this->getMockBuilder('\Not\Process')->getMock();
-        $httpResponseProcessor = new HttpResponseProcessor([new ProcessorReturningNull(), $nonExistentProcessMock]);
-        $httpResponseProcessor->process($this->methodMock, $this->httpResponseMock);
+        $notProcessMock = $this->getMockBuilder('\Not\Process')->getMock();
+        $responseProcessor = new HttpResponseProcessor([new ProcessorReturningNull(), $notProcessMock]);
+        $responseProcessor->process($this->methodMock, $this->httpResponseMock);
     }
 
     public function testProcessReturnsNullIfAllDefinedProcessesReturnNull(): void
     {
-        $httpResponseProcessor = new HttpResponseProcessor(
+        $responseProcessor = new HttpResponseProcessor(
             [new ProcessorReturningNull(), new ProcessorReturningNull()]
         );
-        $result = $httpResponseProcessor->process($this->methodMock, $this->httpResponseMock);
+        $result = $responseProcessor->process($this->methodMock, $this->httpResponseMock);
         $this->assertNull($result);
     }
 
     public function testProcessReturnsResponseIfOneOfDefinedProcessesReturnsResponse(): void
     {
-        $httpResponseProcessor = new HttpResponseProcessor(
+        $responseProcessor = new HttpResponseProcessor(
             [new ProcessorReturningNull(), new ProcessorReturningSimpleResponse()]
         );
-        $result = $httpResponseProcessor->process($this->methodMock, $this->httpResponseMock);
+        $result = $responseProcessor->process($this->methodMock, $this->httpResponseMock);
         $this->assertInstanceOf(Response::class, $result);
     }
 
@@ -96,8 +96,8 @@ class HttpResponseProcessorTest extends TestCase
      */
     public function testProcessReturnsProperResponseForCorrectHttpErrorResponses(int $errorStatusCode): void
     {
-        $httpResponseProcessor = new HttpResponseProcessor();
-        $result = $httpResponseProcessor->process($this->methodMock, new ErrorResponse($errorStatusCode));
+        $responseProcessor = new HttpResponseProcessor();
+        $result = $responseProcessor->process($this->methodMock, new ErrorResponse($errorStatusCode));
         $this->assertInstanceOf(Response::class, $result);
         $this->assertFalse($result->getSuccess());
         $this->assertInstanceOf(Error::class, $result->getPayload());
@@ -110,8 +110,8 @@ class HttpResponseProcessorTest extends TestCase
      */
     public function testProcessReturnsNullForIncorrectHttp400Response(ResponseInterface $response): void
     {
-        $httpResponseProcessor = new HttpResponseProcessor();
-        $result = $httpResponseProcessor->process($this->methodMock, $response);
+        $responseProcessor = new HttpResponseProcessor();
+        $result = $responseProcessor->process($this->methodMock, $response);
         $this->assertNull($result);
     }
 
@@ -121,8 +121,8 @@ class HttpResponseProcessorTest extends TestCase
      */
     public function testProcessReturnsProperResponseForCorrectOkResponse(int $okStatusCode): void
     {
-        $httpResponseProcessor = new HttpResponseProcessor();
-        $result = $httpResponseProcessor->process(new MethodWithResponsePayload(), new OkResponse($okStatusCode));
+        $responseProcessor = new HttpResponseProcessor();
+        $result = $responseProcessor->process(new MethodWithResponsePayload(), new OkResponse($okStatusCode));
         $this->assertInstanceOf(Response::class, $result);
         $this->assertTrue($result->getSuccess());
         $this->assertInstanceOf(DataTransferObject::class, $result->getPayload());
@@ -130,8 +130,8 @@ class HttpResponseProcessorTest extends TestCase
 
     public function testProcessReturnsProperResponseForOkResponseWithJsonArray(): void
     {
-        $httpResponseProcessor = new HttpResponseProcessor();
-        $result = $httpResponseProcessor
+        $responseProcessor = new HttpResponseProcessor();
+        $result = $responseProcessor
             ->process(new MethodWithArrayResponsePayload(), new Response200WithJsonArrayBody());
         $this->assertInstanceOf(Response::class, $result);
         $this->assertTrue($result->getSuccess());
@@ -140,8 +140,8 @@ class HttpResponseProcessorTest extends TestCase
 
     public function testProcessReturnsProperResponseForOkResponseWithBinaryContent(): void
     {
-        $httpResponseProcessor = new HttpResponseProcessor();
-        $result = $httpResponseProcessor->process(new MethodWithBinaryResponse(), new Response200WithBinaryBody());
+        $responseProcessor = new HttpResponseProcessor();
+        $result = $responseProcessor->process(new MethodWithBinaryResponse(), new Response200WithBinaryBody());
         $this->assertInstanceOf(Response::class, $result);
         $this->assertTrue($result->getSuccess());
         $this->assertInstanceOf(BinaryContent::class, $result->getPayload());
@@ -153,22 +153,22 @@ class HttpResponseProcessorTest extends TestCase
      */
     public function testProcessReturnsNullForIncorrectHttp200Response(ResponseInterface $response): void
     {
-        $httpResponseProcessor = new HttpResponseProcessor();
-        $result = $httpResponseProcessor->process(new MethodWithResponsePayload(), $response);
+        $responseProcessor = new HttpResponseProcessor();
+        $result = $responseProcessor->process(new MethodWithResponsePayload(), $response);
         $this->assertNull($result);
     }
 
     public function testProcessReturnsNullForCorrectHttp200ResponseAndIncorrectMethod(): void
     {
-        $httpResponseProcessor = new HttpResponseProcessor();
-        $result = $httpResponseProcessor->process(new MethodWithoutPayload(), new OkResponse(200));
+        $responseProcessor = new HttpResponseProcessor();
+        $result = $responseProcessor->process(new MethodWithoutPayload(), new OkResponse(200));
         $this->assertNull($result);
     }
 
     public function testProcessReturnsProperResponseForCorrectNoContentResponse(): void
     {
-        $httpResponseProcessor = new HttpResponseProcessor();
-        $result = $httpResponseProcessor->process(new MethodWithoutPayload(), new NoContentResponse());
+        $responseProcessor = new HttpResponseProcessor();
+        $result = $responseProcessor->process(new MethodWithoutPayload(), new NoContentResponse());
         $this->assertInstanceOf(Response::class, $result);
         $this->assertTrue($result->getSuccess());
         $this->assertNull($result->getPayload());
@@ -176,8 +176,8 @@ class HttpResponseProcessorTest extends TestCase
 
     public function testProcessReturnsNullForCorrectNoContentResponseAndIncorrectMethod(): void
     {
-        $httpResponseProcessor = new HttpResponseProcessor();
-        $result = $httpResponseProcessor->process(new MethodWithResponsePayload(), new NoContentResponse());
+        $responseProcessor = new HttpResponseProcessor();
+        $result = $responseProcessor->process(new MethodWithResponsePayload(), new NoContentResponse());
         $this->assertNull($result);
     }
 

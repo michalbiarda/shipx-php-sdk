@@ -15,19 +15,19 @@ use Psr\Http\Message\ResponseInterface;
 
 class ResponseFactory
 {
-    private HttpResponseProcessor $httpResponseProcessor;
+    private HttpResponseProcessor $responseProcessor;
 
-    public function __construct(?HttpResponseProcessor $httpResponseProcessor = null)
+    public function __construct(?HttpResponseProcessor $responseProcessor = null)
     {
-        if (is_null($httpResponseProcessor)) {
-            $httpResponseProcessor = new HttpResponseProcessor();
+        if (is_null($responseProcessor)) {
+            $responseProcessor = new HttpResponseProcessor();
         }
-        $this->httpResponseProcessor = $httpResponseProcessor;
+        $this->responseProcessor = $responseProcessor;
     }
 
     public function create(MethodInterface $method, ResponseInterface $httpResponse): Response
     {
-        $response = $this->httpResponseProcessor->process($method, $httpResponse);
+        $response = $this->responseProcessor->process($method, $httpResponse);
         return $response ?: new Response(false, new Error([
             'status' => -1,
             'error' => 'unprocessed_response',

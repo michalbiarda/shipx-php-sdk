@@ -48,8 +48,8 @@ class RequestFactory
     private function buildUri(MethodInterface $method, array $uriParams, array $queryParams): string
     {
         $uri = $method->getUriTemplate();
-        $uriParamsFromTemplate = $this->getUriParamsFromTemplate($uri);
-        foreach ($uriParamsFromTemplate as $param) {
+        $paramsFromTemplate = $this->getUriParamsFromTemplate($uri);
+        foreach ($paramsFromTemplate as $param) {
             if (!array_key_exists($param, $uriParams)) {
                 throw new InvalidArgumentException(sprintf('Value for "%s" param is missing.', $param));
             }
@@ -159,11 +159,11 @@ class RequestFactory
             /** @var WithQueryParamsInterface $method */
             $requiredParams = array_merge($requiredParams, $method->getRequiredQueryParams());
         }
-        $missingRequiredParams = array_diff($requiredParams, array_keys($queryParams));
-        if (!empty($missingRequiredParams)) {
+        $missingParams = array_diff($requiredParams, array_keys($queryParams));
+        if (!empty($missingParams)) {
             throw new InvalidQueryParamsException(sprintf(
                 'Values for the following query params are missing: %s',
-                join(', ', $missingRequiredParams)
+                join(', ', $missingParams)
             ));
         }
     }

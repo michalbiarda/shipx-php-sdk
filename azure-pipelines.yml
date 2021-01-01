@@ -41,5 +41,5 @@ steps:
 - script: ./vendor/bin/phpmd ./src/ ansi cleancode,codesize,unusedcode,design
   displayName: 'Run PHP mess detector for basic rulesets'
 
-- script: ./vendor/bin/phpmd ./src/ ansi controversial --exclude /Model/*,/Form/*
+- script: ./vendor/bin/phpmd ./src/ ansi controversial,naming --exclude /Model/*,/Form/*
   displayName: 'Run PHP mess detector for controversial ruleset'
