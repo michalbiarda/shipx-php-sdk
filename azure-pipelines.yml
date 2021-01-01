@@ -25,16 +25,6 @@ steps:
 - script: composer install --no-interaction --prefer-dist
   displayName: 'composer install'
 
-- script: ./vendor/bin/phpunit --no-configuration --log-junit $(System.DefaultWorkingDirectory)/junit-report.xml ./src/Test/Unit/
-  displayName: 'Run unit tests with phpunit'
-
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'JUnit'
-    testResultsFiles: 'junit-report.xml'
-    failTaskOnFailedTests: true
-  displayName: 'Publish unit tests results'
-
 - script: ./vendor/bin/phpcs --standard=./phpcs.ruleset.xml ./src/
   displayName: 'Run PHP code sniffer'
 
@@ -43,3 +33,33 @@ steps:
 
 - script: ./vendor/bin/phpmd ./src/ ansi controversial,naming --exclude /Model/*,/Form/*
   displayName: 'Run PHP mess detector for controversial ruleset'
+
+- script: ./vendor/bin/phpunit --no-configuration --log-junit $(System.DefaultWorkingDirectory)/junit-unit-report.xml ./src/Test/Unit/
+  displayName: 'Run unit tests with phpunit'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: 'junit-unit-report.xml'
+    failTaskOnFailedTests: true
+  displayName: 'Publish unit tests results'
+
+- task: DownloadSecureFile@1
+  name: integrationTestsConfig
+  displayName: 'Download integration tests config file'
+  inputs:
+    secureFile: 'phpunit_integration.xml'
+
+- script: |
+    echo Linking $(integrationTestsConfig.secureFilePath) to the integration tests directory...
+    sudo ln -s -t $(System.DefaultWorkingDirectory)/src/Test $(integrationTestsConfig.secureFilePath)
+
+- script: ./vendor/bin/phpunit --configuration ./src/Test/phpunit_integration.xml --log-junit $(System.DefaultWorkingDirectory)/junit-integration-report.xml
+  displayName: 'Run integration tests with phpunit'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: 'junit-integration-report.xml'
+    failTaskOnFailedTests: true
+  displayName: 'Publish integration tests results'

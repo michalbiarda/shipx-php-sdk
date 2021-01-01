@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace MB\ShipXSDK\Model;
 
+use MB\ShipXSDK\DataTransferObject\DataTransferObject;
+
 class AbstractCollection extends DataTransferObject
 {
     public string $href;

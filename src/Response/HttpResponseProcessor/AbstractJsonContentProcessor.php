@@ -11,7 +11,6 @@ namespace MB\ShipXSDK\Response\HttpResponseProcessor;
 
 use MB\ShipXSDK\DataTransferObject\DataTransferObject;
 use MB\ShipXSDK\Method\MethodInterface;
-use MB\ShipXSDK\Method\WithBinaryResponseInterface;
 use MB\ShipXSDK\Response\Response;
 use Psr\Http\Message\ResponseInterface;
 
@@ -25,9 +24,10 @@ abstract class AbstractJsonContentProcessor implements ProcessorInterface
             $contentType = explode('; ', $httpResponse->getHeaderLine('Content-Type'));
             $mediaType = reset($contentType);
             if ($mediaType === 'application/json') {
+                $httpResponse->getBody()->rewind();
                 $data = json_decode($httpResponse->getBody()->getContents(), true);
                 if (!is_null($data)) {
-                    $payload = $this->getPayload($method, $data);
+                    $payload = $this->getPayload($method, $data, $httpResponse);
                     if ($payload) {
                         return new Response($this->getStatus(), $payload);
                     }
@@ -44,5 +44,9 @@ abstract class AbstractJsonContentProcessor implements ProcessorInterface
 
     abstract protected function getStatus(): bool;
 
-    abstract protected function getPayload(MethodInterface $method, array $data): ?DataTransferObject;
+    abstract protected function getPayload(
+        MethodInterface $method,
+        array $data,
+        ResponseInterface $httpResponse
+    ): ?DataTransferObject;
 }

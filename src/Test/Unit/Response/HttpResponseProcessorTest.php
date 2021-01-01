@@ -20,6 +20,7 @@ use MB\ShipXSDK\Test\Unit\Stub\HttpResponse\ErrorResponse;
 use MB\ShipXSDK\Test\Unit\Stub\HttpResponse\NoContentResponse;
 use MB\ShipXSDK\Test\Unit\Stub\HttpResponse\OkResponse;
 use MB\ShipXSDK\Test\Unit\Stub\HttpResponse\Response200WithBinaryBody;
+use MB\ShipXSDK\Test\Unit\Stub\HttpResponse\Response200WithErrorData;
 use MB\ShipXSDK\Test\Unit\Stub\HttpResponse\Response200WithJsonArrayBody;
 use MB\ShipXSDK\Test\Unit\Stub\HttpResponse\Response200WithoutJsonBody;
 use MB\ShipXSDK\Test\Unit\Stub\HttpResponse\Response200WithoutJsonHeader;
@@ -102,6 +103,15 @@ class HttpResponseProcessorTest extends TestCase
         $this->assertFalse($result->getSuccess());
         $this->assertInstanceOf(Error::class, $result->getPayload());
         $this->assertSame($errorStatusCode, $result->getPayload()->toArray()['status']);
+    }
+
+    public function testProcessReturnsProperResponseForHttp200ResponseWithErrorData(): void
+    {
+        $responseProcessor = new HttpResponseProcessor();
+        $result = $responseProcessor->process($this->methodMock, new Response200WithErrorData());
+        $this->assertInstanceOf(Response::class, $result);
+        $this->assertFalse($result->getSuccess());
+        $this->assertInstanceOf(Error::class, $result->getPayload());
     }
 
     /**
