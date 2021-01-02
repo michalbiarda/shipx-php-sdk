@@ -18,6 +18,9 @@ use MB\ShipXSDK\Method\WithSortableResultsInterface;
 use MB\ShipXSDK\Model\AddressBookCollection;
 use MB\ShipXSDK\Request\Request;
 
+/**
+ * @todo Check why incorrect request (with failed validation) lasts infinitely, instead of returning error response.
+ */
 class GetList implements
     MethodInterface,
     WithJsonResponseInterface,
