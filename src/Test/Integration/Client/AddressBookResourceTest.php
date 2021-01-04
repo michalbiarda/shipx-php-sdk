@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace MB\ShipXSDK\Test\Integration\Client;
 
-use MB\ShipXSDK\Client\Client;
 use MB\ShipXSDK\DataTransferObject\DataTransferObject;
 use MB\ShipXSDK\Method\AddressBook\Create;
 use MB\ShipXSDK\Method\AddressBook\Delete;
@@ -21,27 +20,18 @@ use MB\ShipXSDK\Model\AddressBook;
 use MB\ShipXSDK\Model\AddressBookCollection;
 use MB\ShipXSDK\Model\Error;
 use MB\ShipXSDK\Response\Response;
-use MB\ShipXSDK\Test\Integration\Config;
-use PHPUnit\Framework\TestCase;
 
 use function time;
 
-/**
- * @SuppressWarnings(PHPMD.StaticAccess)
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
- */
 class AddressBookResourceTest extends TestCase
 {
-    private Client $client;
-
-    private string $organizationId;
+    protected bool $withAuthToken = true;
 
     private string $testName;
 
     public function setUp(): void
     {
-        $this->client = (new ClientFactory())->create(true);
-        $this->organizationId = Config::getOrganizationId();
+        parent::setUp();
         $this->testName = 'Name ' . time();
     }
 
@@ -67,7 +57,7 @@ class AddressBookResourceTest extends TestCase
 
     public function testGetListFailedCall(): void
     {
-        $this->markTestSkipped('Invalid request lasts infinitely, instead of returning error response.');
+        //$this->markTestSkipped('Invalid request lasts infinitely, instead of returning error response.');
         $this->getList(0, true);
     }
 
@@ -78,7 +68,6 @@ class AddressBookResourceTest extends TestCase
 
     public function testDeleteFailedCall(): void
     {
-        $this->markTestSkipped('Invalid request lasts infinitely, instead of returning error response.');
         $this->delete(0, true);
     }
 
@@ -95,8 +84,7 @@ class AddressBookResourceTest extends TestCase
             $this->assertError($response, $payload);
             return null;
         }
-        $this->assertTrue($response->getSuccess());
-        $this->assertInstanceOf(AddressBook::class, $payload);
+        $this->assertSuccess($response, $payload, AddressBook::class);
         /** @var AddressBook $payload */
         return $payload;
     }
@@ -114,8 +102,7 @@ class AddressBookResourceTest extends TestCase
             $this->assertError($response, $payload);
             return null;
         }
-        $this->assertTrue($response->getSuccess());
-        $this->assertInstanceOf(AddressBook::class, $payload);
+        $this->assertSuccess($response, $payload, AddressBook::class);
         /** @var AddressBook $payload */
         $this->assertSame('New ' . $this->testName, $payload->name);
         return $payload;
@@ -124,12 +111,9 @@ class AddressBookResourceTest extends TestCase
     private function getList(int $addressBookId, bool $expectError): ?AddressBookCollection
     {
         $queryParams = ['id' => $addressBookId];
-        if ($expectError) {
-            $queryParams = ['kind' => $addressBookId];
-        }
         $response = $this->client->callMethod(
             new GetList(),
-            ['organization_id' => $this->organizationId],
+            ['organization_id' => $expectError ? 0 : $this->organizationId],
             $queryParams
         );
         $payload = $response->getPayload();
@@ -137,8 +121,7 @@ class AddressBookResourceTest extends TestCase
             $this->assertError($response, $payload);
             return null;
         }
-        $this->assertTrue($response->getSuccess());
-        $this->assertInstanceOf(AddressBookCollection::class, $payload);
+        $this->assertSuccess($response, $payload, AddressBookCollection::class);
         /** @var AddressBookCollection $payload */
         $this->assertSame($addressBookId, $payload->items[0]->id);
         return $payload;
@@ -155,8 +138,7 @@ class AddressBookResourceTest extends TestCase
             $this->assertError($response, $payload);
             return null;
         }
-        $this->assertTrue($response->getSuccess());
-        $this->assertInstanceOf(AddressBook::class, $payload);
+        $this->assertSuccess($response, $payload, AddressBook::class);
         /** @var AddressBook $payload */
         $this->assertSame($addressBookId, $payload->id);
         return $payload;
@@ -173,8 +155,7 @@ class AddressBookResourceTest extends TestCase
             $this->assertError($response, $payload);
             return;
         }
-        $this->assertTrue($response->getSuccess());
-        $this->assertNull($payload);
+        $this->assertSuccess($response, $payload, null);
     }
 
     private function createAddressBookModel(string $name): AddressBook
@@ -201,11 +182,5 @@ class AddressBookResourceTest extends TestCase
                 'building_number' => '82/1'
             ])
         ]);
-    }
-
-    private function assertError(Response $response, DataTransferObject $payload): void
-    {
-        $this->assertFalse($response->getSuccess());
-        $this->assertInstanceOf(Error::class, $payload);
     }
 }

@@ -13,9 +13,6 @@ use MB\ShipXSDK\Method\MethodInterface;
 use MB\ShipXSDK\Method\WithAuthorizationInterface;
 use MB\ShipXSDK\Request\Request;
 
-/**
- * @todo Check why incorrect request (with incorrect ID) lasts infinitely, instead of returning error response.
- */
 class Delete implements
     MethodInterface,
     WithAuthorizationInterface

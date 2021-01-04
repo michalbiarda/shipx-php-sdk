@@ -39,6 +39,9 @@ class OptionsFactory
             $stack->push(Middleware::mapResponse($fn));
         }
         $options['handler'] = $stack;
+        // @todo Unhardcode timeout value
+        $options['connect_timeout'] = 30;
+        $options['timeout'] = 30;
         return $options;
     }
 }
