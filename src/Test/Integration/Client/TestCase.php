@@ -20,6 +20,8 @@ use MB\ShipXSDK\Test\Integration\Config;
  */
 class TestCase extends \PHPUnit\Framework\TestCase
 {
+    protected const WRONG_ID = 'wrong_id';
+
     protected Client $client;
 
     protected string $organizationId;

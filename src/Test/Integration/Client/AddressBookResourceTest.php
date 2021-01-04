@@ -57,7 +57,6 @@ class AddressBookResourceTest extends TestCase
 
     public function testGetListFailedCall(): void
     {
-        //$this->markTestSkipped('Invalid request lasts infinitely, instead of returning error response.');
         $this->getList(0, true);
     }
 
@@ -148,7 +147,7 @@ class AddressBookResourceTest extends TestCase
     {
         $response = $this->client->callMethod(
             new Delete(),
-            ['id' => $addressBookId]
+            ['id' => $expectError ? static::WRONG_ID : $addressBookId]
         );
         $payload = $response->getPayload();
         if ($expectError) {
