@@ -11,6 +11,7 @@ namespace MB\ShipXSDK\Test\Integration\Client;
 
 use MB\ShipXSDK\Client\Client;
 use MB\ShipXSDK\DataTransferObject\DataTransferObject;
+use MB\ShipXSDK\Model\BinaryContent;
 use MB\ShipXSDK\Model\Error;
 use MB\ShipXSDK\Response\Response;
 use MB\ShipXSDK\Test\Integration\Config;
@@ -42,6 +43,15 @@ class TestCase extends \PHPUnit\Framework\TestCase
             return;
         }
         $this->assertNull($payload);
+    }
+
+    protected function assertSuccessWithFile(Response $response, DataTransferObject $payload, string $contentType): void
+    {
+        $this->assertTrue($response->getSuccess());
+        $this->assertInstanceOf(BinaryContent::class, $payload);
+        /** @var BinaryContent $payload */
+        $this->assertSame($contentType, $payload->content_type);
+        $this->assertGreaterThan(0, $payload->stream->getSize());
     }
 
     protected function assertError(Response $response, DataTransferObject $payload): void

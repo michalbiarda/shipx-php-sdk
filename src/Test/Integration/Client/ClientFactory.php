@@ -12,8 +12,6 @@ namespace MB\ShipXSDK\Test\Integration\Client;
 use MB\ShipXSDK\Client\Client;
 use MB\ShipXSDK\Test\Integration\Config;
 
-use function getenv;
-
 /**
  * @SuppressWarnings(PHPMD.StaticAccess)
  */

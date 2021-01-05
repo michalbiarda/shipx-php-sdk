@@ -11,6 +11,8 @@ namespace MB\ShipXSDK\Test\Integration;
 
 use RuntimeException;
 
+use function getenv;
+
 class Config
 {
     private const ENV_SHIPX_BASE_URI = 'SHIPX_BASE_URI';
