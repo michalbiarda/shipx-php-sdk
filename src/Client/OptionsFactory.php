@@ -15,6 +15,8 @@ use MB\ShipXSDK\Request\Request;
 
 class OptionsFactory
 {
+    public const TIMEOUT = 30;
+
     /**
      * @param Request $request
      * @param \Closure[] $requestMap
@@ -40,8 +42,8 @@ class OptionsFactory
         }
         $options['handler'] = $stack;
         // @todo Unhardcode timeout value
-        $options['connect_timeout'] = 30;
-        $options['timeout'] = 30;
+        $options['connect_timeout'] = self::TIMEOUT;
+        $options['timeout'] = self::TIMEOUT;
         return $options;
     }
 }
