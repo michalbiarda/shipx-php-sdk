@@ -47,6 +47,9 @@ class TestCase extends \PHPUnit\Framework\TestCase
 
     protected function assertSuccessWithFile(Response $response, DataTransferObject $payload, string $contentType): void
     {
+        if (!$response->getSuccess()) {
+            $this->debug(print_r($response->getPayload()->toArray(), true));
+        }
         $this->assertTrue($response->getSuccess());
         $this->assertInstanceOf(BinaryContent::class, $payload);
         /** @var BinaryContent $payload */
@@ -58,5 +61,12 @@ class TestCase extends \PHPUnit\Framework\TestCase
     {
         $this->assertFalse($response->getSuccess());
         $this->assertInstanceOf(Error::class, $payload);
+    }
+
+    protected function debug(string $message): void
+    {
+        $stdout = fopen('php://stdout', 'w');
+        fwrite($stdout, $message);
+        fclose($stdout);
     }
 }

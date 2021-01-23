@@ -22,8 +22,7 @@ class ReportResourceTest extends TestCase
             ['organization_id' => $this->organizationId],
             ['format' => 'csv', 'start_date' => '2020-01-01', 'end_date' => '2020-12-30']
         );
-        $payload = $response->getPayload();
-        $this->assertSuccessWithFile($response, $payload, 'application/csv');
+        $this->assertSuccessWithFile($response, $response->getPayload(), 'application/csv');
     }
 
     public function testGetCodFailedCall(): void
@@ -33,7 +32,6 @@ class ReportResourceTest extends TestCase
             ['organization_id' => $this->organizationId],
             ['format' => 'docx', 'start_date' => '2021-01-01', 'end_date' => '2020-12-30']
         );
-        $payload = $response->getPayload();
-        $this->assertError($response, $payload);
+        $this->assertError($response, $response->getPayload());
     }
 }

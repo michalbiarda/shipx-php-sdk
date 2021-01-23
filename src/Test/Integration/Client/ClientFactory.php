@@ -17,14 +17,15 @@ use MB\ShipXSDK\Test\Integration\Config;
  */
 class ClientFactory
 {
-    private const REPEATS_ON_TIMEOUT = 5;
+    private const REPEATS_ON_TIMEOUT = 10;
+    private const TIMEOUT = 6;
 
     public function create(bool $withAuthToken): Client
     {
         $baseUri = Config::getBaseUri();
         if ($withAuthToken) {
-            return new Client($baseUri, Config::getAuthToken(), self::REPEATS_ON_TIMEOUT);
+            return new Client($baseUri, Config::getAuthToken(), self::REPEATS_ON_TIMEOUT, self::TIMEOUT);
         }
-        return new Client($baseUri, null, self::REPEATS_ON_TIMEOUT);
+        return new Client($baseUri, null, self::REPEATS_ON_TIMEOUT, self::TIMEOUT);
     }
 }

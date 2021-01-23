@@ -29,9 +29,8 @@ class OrganizationResourceTest extends TestCase
 
     public function testReadFailedCall(): void
     {
-        $this->markTestSkipped(
-            'The resource always returns current organization data, no matter what ID was provided.'
-        );
+        $this->markTestSkipped('Sandbox API always returns current organization data, '
+            . 'no matter what ID was provided.');
     }
 
     public function testGetListSuccessfulCall(): void

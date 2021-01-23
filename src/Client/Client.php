@@ -23,6 +23,8 @@ use function is_null;
 
 class Client
 {
+    public const DEFAULT_TIMEOUT = 30;
+
     private string $baseUri;
 
     private ?string $authToken;
@@ -41,10 +43,13 @@ class Client
 
     private int $repeatsOnTimeout;
 
+    private ?int $timeout;
+
     public function __construct(
         string $baseUri,
         ?string $authToken = null,
         int $repeatsOnTimeout = 0,
+        ?int $timeout = null,
         ?RequestSender $requestSender = null,
         ?RequestFactory $requestFactory = null,
         ?ResponseFactory $responseFactory = null,
@@ -65,6 +70,7 @@ class Client
             $optionsFactory = new OptionsFactory();
         }
         $this->repeatsOnTimeout = $repeatsOnTimeout;
+        $this->timeout = $timeout;
         $this->requestSender = $requestSender;
         $this->requestFactory = $requestFactory;
         $this->responseFactory = $responseFactory;
@@ -87,7 +93,7 @@ class Client
         $httpResponse = $this->requestSender->send(
             $request->getMethod(),
             $this->baseUri . $request->getUri(),
-            $this->buildOptions($request),
+            $this->buildOptions($request, $this->timeout),
             $this->repeatsOnTimeout
         );
         return $this->responseFactory->create($method, $httpResponse);
@@ -103,7 +109,7 @@ class Client
         return $this->lastHttpResponse;
     }
 
-    private function buildOptions(Request $request): array
+    private function buildOptions(Request $request, ?int $timeout = null): array
     {
         return $this->optionsFactory->create(
             $request,
@@ -118,7 +124,8 @@ class Client
                     $this->lastHttpResponse = $response;
                     return $response;
                 }
-            ]
+            ],
+            is_null($timeout) ? static::DEFAULT_TIMEOUT : $timeout
         );
     }
 }
