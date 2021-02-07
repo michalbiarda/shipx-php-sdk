@@ -65,8 +65,10 @@ class TestCase extends \PHPUnit\Framework\TestCase
 
     protected function debug(string $message): void
     {
-        $stdout = fopen('php://stdout', 'w');
-        fwrite($stdout, $message);
-        fclose($stdout);
+        if (Config::isDebugEnabled()) {
+            $stdout = fopen('php://stdout', 'w');
+            fwrite($stdout, $message);
+            fclose($stdout);
+        }
     }
 }

@@ -17,5 +17,6 @@
         <env name="SHIPX_AUTH_TOKEN" value=""/>
         <env name="SHIPX_ORGANIZATION_ID" value=""/>
         <env name="WAIT_FOR_ASYNC" value="1"/>
+        <env name="DEBUG_ENABLED" value="0"/>
     </php>
 </phpunit>

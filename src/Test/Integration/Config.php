@@ -19,6 +19,7 @@ class Config
     private const ENV_SHIPX_AUTH_TOKEN = 'SHIPX_AUTH_TOKEN';
     private const ENV_SHIPX_ORGANIZATION_ID = 'SHIPX_ORGANIZATION_ID';
     private const ENV_WAIT_FOR_ASYNC = 'WAIT_FOR_ASYNC';
+    private const ENV_DEBUG_ENABLED = 'DEBUG_ENABLED';
 
     public const MAX_TRIES_FOR_ASYNC = 120;
     public const WAITING_INTERVAL_FOR_ASYNC = 5;
@@ -41,6 +42,11 @@ class Config
     public static function shouldWaitForAsync(): bool
     {
         return (bool) self::getValue(self::ENV_WAIT_FOR_ASYNC);
+    }
+
+    public static function isDebugEnabled(): bool
+    {
+        return (bool) self::getValue(self::ENV_DEBUG_ENABLED);
     }
 
     private static function getValue(string $variable): string
