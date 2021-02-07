@@ -17,13 +17,18 @@ class OptionsFactory
 {
     /**
      * @param Request $request
-     * @param \Closure[] $requestMap
-     * @param \Closure[] $responseMap
+     * @param array $requestMap
+     * @param array $responseMap
+     * @param int $timeout
      * @return array
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    public function create(Request $request, array $requestMap, array $responseMap): array
-    {
+    public function create(
+        Request $request,
+        array $requestMap,
+        array $responseMap,
+        int $timeout
+    ): array {
         $options = [];
         if ($request->getHeaders()) {
             $options['headers'] = $request->getHeaders();
@@ -39,6 +44,8 @@ class OptionsFactory
             $stack->push(Middleware::mapResponse($fn));
         }
         $options['handler'] = $stack;
+        $options['connect_timeout'] = $timeout;
+        $options['timeout'] = $timeout;
         return $options;
     }
 }

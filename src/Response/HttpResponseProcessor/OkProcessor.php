@@ -13,6 +13,7 @@ use MB\ShipXSDK\DataTransferObject\DataTransferObject;
 use MB\ShipXSDK\Method\MethodInterface;
 use MB\ShipXSDK\Method\WithJsonArrayResponseInterface;
 use MB\ShipXSDK\Method\WithJsonResponseInterface;
+use Psr\Http\Message\ResponseInterface;
 
 class OkProcessor extends AbstractJsonContentProcessor
 {
@@ -26,8 +27,11 @@ class OkProcessor extends AbstractJsonContentProcessor
         return true;
     }
 
-    protected function getPayload(MethodInterface $method, array $data): ?DataTransferObject
-    {
+    protected function getPayload(
+        MethodInterface $method,
+        array $data,
+        ResponseInterface $httpResponse
+    ): ?DataTransferObject {
         if (!$method instanceof WithJsonResponseInterface) {
             return null;
         }

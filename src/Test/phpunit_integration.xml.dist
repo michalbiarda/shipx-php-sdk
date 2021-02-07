@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © Michał Biarda. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<phpunit bootstrap="../../vendor/autoload.php">
+    <testsuites>
+        <testsuite name="Integration Tests">
+            <directory>Integration</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <!-- Fill in with your ShipX API data -->
+        <env name="SHIPX_BASE_URI" value="https://sandbox-api-shipx-pl.easypack24.net"/>
+        <env name="SHIPX_AUTH_TOKEN" value=""/>
+        <env name="SHIPX_ORGANIZATION_ID" value=""/>
+        <env name="WAIT_FOR_ASYNC" value="1"/>
+        <env name="DEBUG_ENABLED" value="0"/>
+    </php>
+</phpunit>

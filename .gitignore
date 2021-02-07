@@ -1,3 +1,4 @@
 .idea
 .phpunit.result.cache
 vendor
+src/Test/phpunit_integration.xml

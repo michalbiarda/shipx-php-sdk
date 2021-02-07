@@ -23,6 +23,9 @@ class ValueCaster extends OriginalValueCaster
         }
         foreach ($validator->allowedTypes as $type) {
             if ($type === DateTime::class) {
+                if (is_null($value)) {
+                    return null;
+                }
                 return new DateTime($value);
             }
         }
