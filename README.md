@@ -19,6 +19,9 @@ The recommended way to install this package is through [Composer](https://getcom
 composer require michalbiarda/shipx-php-sdk
 ```
 
+**Watchout:** This package uses [HTTPlug](http://docs.php-http.org/en/latest/httplug/introduction.html) for HTTP client abstraction.
+Please check their [official documentation](http://docs.php-http.org/en/latest/httplug/users.html) to understand how to configure it properly with your project.
+
 ## 3. Anatomy of SDK
 
 ### 3.1. API client creation

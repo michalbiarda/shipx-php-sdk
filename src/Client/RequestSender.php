@@ -9,52 +9,65 @@ declare(strict_types=1);
 
 namespace MB\ShipXSDK\Client;
 
-use GuzzleHttp\Client as HttpClient;
-use GuzzleHttp\Exception\BadResponseException;
-use GuzzleHttp\Exception\ConnectException;
+use Http\Discovery\Psr17FactoryDiscovery;
+use Http\Discovery\Psr18ClientDiscovery;
+use MB\ShipXSDK\Exception\HttpClientException;
+use Psr\Http\Client\ClientExceptionInterface;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 
-use function is_null;
-use function strpos;
+use function json_encode;
 
-class RequestSender
+class RequestSender implements RequestSenderInterface
 {
-    private ?HttpClient $httpClient;
+    private ClientInterface $httpClient;
 
-    public function __construct(?HttpClient $httpClient = null)
-    {
-        if (is_null($httpClient)) {
-            $httpClient = new HttpClient();
-        }
-        $this->httpClient = $httpClient;
+    private RequestFactoryInterface $requestFactory;
+
+    private StreamFactoryInterface $streamFactory;
+
+    private ?RequestInterface $lastHttpRequest;
+
+    /**
+     * @param ClientInterface|null $httpClient
+     * @param RequestFactoryInterface|null $requestFactory
+     * @param StreamFactoryInterface|null $streamFactory
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
+    public function __construct(
+        ?ClientInterface $httpClient = null,
+        ?RequestFactoryInterface $requestFactory = null,
+        ?StreamFactoryInterface $streamFactory = null
+    ) {
+        $this->httpClient = $httpClient ?? Psr18ClientDiscovery::find();
+        $this->requestFactory = $requestFactory ?? Psr17FactoryDiscovery::findRequestFactory();
+        $this->streamFactory = $streamFactory ?? Psr17FactoryDiscovery::findStreamFactory();
     }
 
-    public function send(string $httpMethod, string $uri, array $options, int $repeatsOnTimeout): ResponseInterface
+    public function send(string $httpMethod, string $uri, array $headers, array $payload): ResponseInterface
     {
         try {
-            $counter = 0;
-            do {
-                $counter++;
-                $timeout = false;
-                $connectException = null;
-                try {
-                    $httpResponse = $this->httpClient->request($httpMethod, $uri, $options);
-                } catch (ConnectException $e) {
-                    $connectException = $e;
-                    if (strpos($e->getMessage(), 'cURL error 28') !== false) {
-                        $timeout = true;
-                    }
-                    if (!$timeout) {
-                        throw $e;
-                    }
-                }
-            } while ($counter <= $repeatsOnTimeout && $timeout);
-            if (!is_null($connectException)) {
-                throw $connectException;
+            $httpRequest = $this->requestFactory->createRequest($httpMethod, $uri);
+            foreach ($headers as $name => $value) {
+                $httpRequest = $httpRequest->withHeader($name, $value);
             }
-        } catch (BadResponseException $e) {
-            $httpResponse = $e->getResponse();
+            if (!empty($payload)) {
+                $stream = $this->streamFactory->createStream(json_encode($payload));
+                $httpRequest = $httpRequest->withBody($stream);
+            }
+            $this->lastHttpRequest = $httpRequest;
+            $httpResponse = $this->httpClient->sendRequest($httpRequest);
+        } catch (ClientExceptionInterface $e) {
+            throw new HttpClientException($e->getMessage(), $e->getCode(), $e);
         }
         return $httpResponse;
+    }
+
+    public function getLastHttpRequest(): ?RequestInterface
+    {
+        return $this->lastHttpRequest;
     }
 }

@@ -18,11 +18,11 @@ class PointResourceTest extends TestCase
 {
     public function testReadSuccessfulCall(): void
     {
-        $response = $this->client->callMethod(new Read(), ['name' => 'AND01A']);
+        $response = $this->client->callMethod(new Read(), ['name' => 'BBI01HO']);
         $payload = $response->getPayload();
         $this->assertSuccess($response, $payload, Point::class);
         /** @var Point $payload */
-        $this->assertSame('AND01A', $payload->name);
+        $this->assertSame('BBI01HO', $payload->name);
     }
 
     public function testReadFailedCall(): void
@@ -38,7 +38,7 @@ class PointResourceTest extends TestCase
             new GetList(),
             [],
             [
-                'name' => 'AND01A,ANR01A',
+                'name' => 'BBI01HO',
                 'sort_order' => 'desc',
                 'sort_by' => 'name'
             ]
@@ -46,13 +46,12 @@ class PointResourceTest extends TestCase
         $payload = $response->getPayload();
         $this->assertSuccess($response, $payload, PointCollection::class);
         /** @var PointCollection $payload */
-        $this->assertSame('ANR01A', $payload->items[0]->name);
-        $this->assertSame('AND01A', $payload->items[1]->name);
+        $this->assertSame('BBI01HO', $payload->items[0]->name);
     }
 
     public function testGetListFailedCall(): void
     {
-        $response = $this->client->callMethod(new GetList(), [], ['limit' => -1]);
+        $response = $this->client->callMethod(new GetList(), [], ['updated_from' => 'fail']);
         $payload = $response->getPayload();
         $this->assertError($response, $payload);
     }
