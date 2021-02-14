@@ -17,8 +17,8 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-
 use Psr\Http\Message\StreamFactoryInterface;
+
 use function json_encode;
 
 class RequestSender implements RequestSenderInterface
@@ -31,6 +31,12 @@ class RequestSender implements RequestSenderInterface
 
     private ?RequestInterface $lastHttpRequest;
 
+    /**
+     * @param ClientInterface|null $httpClient
+     * @param RequestFactoryInterface|null $requestFactory
+     * @param StreamFactoryInterface|null $streamFactory
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     public function __construct(
         ?ClientInterface $httpClient = null,
         ?RequestFactoryInterface $requestFactory = null,
