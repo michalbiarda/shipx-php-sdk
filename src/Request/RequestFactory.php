@@ -101,6 +101,9 @@ class RequestFactory
         if (!is_null($authToken)) {
             $headersArray['Authorization'] = 'Bearer ' . $authToken;
         }
+        if ($method instanceof WithJsonRequestInterface) {
+            $headersArray['Content-Type'] = 'application/json';
+        }
         return $headersArray;
     }
 

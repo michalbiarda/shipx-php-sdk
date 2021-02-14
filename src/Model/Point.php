@@ -71,9 +71,9 @@ class Point extends DataTransferObject
 
     public ?string $location_date;
 
-    public bool $location_247;
+    public ?bool $location_247;
 
-    public array $operating_hours_extended;
+    public ?array $operating_hours_extended;
 
     public ?string $agency;
 }
