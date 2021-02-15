@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace MB\ShipXSDK\Method\Shipment;
 
-use MB\ShipXSDK\Form\CreateShipment;
+use MB\ShipXSDK\Model\ShipmentForm;
 use MB\ShipXSDK\Method\MethodInterface;
 use MB\ShipXSDK\Method\WithAuthorizationInterface;
 use MB\ShipXSDK\Method\WithJsonRequestInterface;
@@ -35,7 +35,7 @@ class Create implements
 
     public function getRequestPayloadModelName(): string
     {
-        return CreateShipment::class;
+        return ShipmentForm::class;
     }
 
     public function getResponsePayloadModelName(): string

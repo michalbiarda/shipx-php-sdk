@@ -7,14 +7,13 @@
 
 declare(strict_types=1);
 
-namespace MB\ShipXSDK\Form;
+namespace MB\ShipXSDK\Model;
 
 use MB\ShipXSDK\DataTransferObject\DataTransferObject;
 
-class DeleteComment extends DataTransferObject
+class MpkForm extends DataTransferObject
 {
-    /**
-     * @var int[]
-     */
-    public array $comment_ids;
+    public ?string $name;
+
+    public ?string $description;
 }

@@ -9,7 +9,9 @@ declare(strict_types=1);
 
 namespace MB\ShipXSDK\Model;
 
-class Receiver extends AbstractTransactionParty
+class ShipmentBatchItemForm extends ShipmentAbstractForm
 {
+    public ?int $id;
 
+    public ?string $service;
 }

@@ -39,9 +39,9 @@ class Shipment extends DataTransferObject
 
     public ?ShipmentCustomAttributes $custom_attributes;
 
-    public Sender $sender;
+    public TransactionParty $sender;
 
-    public Receiver $receiver;
+    public TransactionParty $receiver;
 
     /**
      * @todo Check what is the correct type

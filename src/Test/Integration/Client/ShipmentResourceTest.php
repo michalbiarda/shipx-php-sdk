@@ -9,12 +9,15 @@ declare(strict_types=1);
 
 namespace MB\ShipXSDK\Test\Integration\Client;
 
-use MB\ShipXSDK\Form\BuyShipment;
-use MB\ShipXSDK\Form\CreateShipment;
-use MB\ShipXSDK\Form\CreateShipmentBatch;
-use MB\ShipXSDK\Form\CreateShipmentOffer;
-use MB\ShipXSDK\Form\ShipmentOfferItem;
-use MB\ShipXSDK\Form\ShipmentOffersCollection;
+use MB\ShipXSDK\Model\AddressForm;
+use MB\ShipXSDK\Model\ShipmentAbstractForm;
+use MB\ShipXSDK\Model\ShipmentBatchItemForm;
+use MB\ShipXSDK\Model\ShipmentBuyForm;
+use MB\ShipXSDK\Model\ShipmentForm;
+use MB\ShipXSDK\Model\ShipmentBatchForm;
+use MB\ShipXSDK\Model\ShipmentOfferForm;
+use MB\ShipXSDK\Model\ShipmentOfferItemForm;
+use MB\ShipXSDK\Model\ShipmentOfferCollectionForm;
 use MB\ShipXSDK\Method\Shipment\Buy;
 use MB\ShipXSDK\Method\Shipment\BuyBulk;
 use MB\ShipXSDK\Method\Shipment\Cancel;
@@ -27,13 +30,12 @@ use MB\ShipXSDK\Method\Shipment\GetLabels;
 use MB\ShipXSDK\Method\Shipment\GetList;
 use MB\ShipXSDK\Method\Shipment\GetReturnLabels;
 use MB\ShipXSDK\Method\Shipment\Read;
-use MB\ShipXSDK\Model\Address;
 use MB\ShipXSDK\Model\DimensionsSimple;
 use MB\ShipXSDK\Model\ParcelsSimple;
-use MB\ShipXSDK\Model\Receiver;
 use MB\ShipXSDK\Model\Shipment;
 use MB\ShipXSDK\Model\ShipmentBatch;
 use MB\ShipXSDK\Model\ShipmentCollection;
+use MB\ShipXSDK\Model\TransactionPartyForm;
 use MB\ShipXSDK\Model\WeightSimple;
 use MB\ShipXSDK\Test\Integration\Config;
 use PHPUnit\Framework\Error\Notice;
@@ -405,78 +407,82 @@ class ShipmentResourceTest extends TestCase
         $this->assertNull($payload);
     }
 
-    private function createCreateShipmentForm(string $firstName): CreateShipment
+    private function createCreateShipmentForm(string $firstName): ShipmentForm
     {
-        return new CreateShipment($this->createShipmentFormItemData($firstName));
+        $shipmentForm = new ShipmentForm();
+        $this->fillAbstractShipmentForm($shipmentForm, $firstName);
+        $shipmentForm->service = 'inpost_courier_standard';
+        return $shipmentForm;
     }
 
-    private function createCreateShipmentOfferForm(string $firstName): CreateShipmentOffer
+    private function createCreateShipmentOfferForm(string $firstName): ShipmentOfferForm
     {
-        return new CreateShipmentOffer($this->createShipmentFormItemData($firstName, false));
+        $shipmentForm = new ShipmentOfferForm();
+        $this->fillAbstractShipmentForm($shipmentForm, $firstName);
+        return $shipmentForm;
     }
 
     private function createCreateShipmentBatchForm(
         int $itemsCount,
         string $firstName,
         bool $onlyChoiceOfOffer = false
-    ): CreateShipmentBatch {
-        $items = [];
+    ): ShipmentBatchForm {
+        $shipmentBatchForm = new ShipmentBatchForm();
+        $shipments = [];
         for ($i = 0; $i < $itemsCount; $i++) {
-            $items[] = $this->createCreateShipmentBatchFormItem($i, $firstName, $onlyChoiceOfOffer);
+            $shipments[] = $this->createCreateShipmentBatchFormItem($i, $firstName, $onlyChoiceOfOffer);
         }
-        $data = ['shipments' => $items];
-        return new CreateShipmentBatch($data);
+        $shipmentBatchForm->shipments = $shipments;
+        return $shipmentBatchForm;
     }
 
     private function createCreateShipmentBatchFormItem(
         int $uniqueId,
         string $firstName,
         ?bool $onlyChoiceOfOffer = null
-    ): CreateShipmentBatch\Item {
-        $data = $this->createShipmentFormItemData($firstName);
-        $data['id'] = $uniqueId;
+    ): ShipmentBatchItemForm {
+        $shipmentBatchItemForm = new ShipmentBatchItemForm();
+        $this->fillAbstractShipmentForm($shipmentBatchItemForm, $firstName);
+        $shipmentBatchItemForm->service = 'inpost_courier_standard';
+        $shipmentBatchItemForm->id = $uniqueId;
         if (!is_null($onlyChoiceOfOffer)) {
-            $data['only_choice_of_offer'] = $onlyChoiceOfOffer;
+            $shipmentBatchItemForm->only_choice_of_offer = $onlyChoiceOfOffer;
         }
-        return new CreateShipmentBatch\Item($data);
+        return $shipmentBatchItemForm;
     }
 
-    private function createShipmentFormItemData(string $firstName, bool $includeService = true): array
+    private function fillAbstractShipmentForm(ShipmentAbstractForm $shipmentForm, string $firstName): void
     {
-        $data = [
-            'receiver' => new Receiver([
-                'phone' => '123456789',
-                'email' => 'testowy@niepodam.pl',
-                'first_name' => $firstName,
-                'last_name' => 'Testowy',
-                'address' => new Address([
-                    'line1' => '',
-                    'city' => 'Warszawa',
-                    'post_code' => '01-234',
-                    'country_code' => 'PL',
-                    'street' => 'Testowa',
-                    'building_number' => '12/23'
-                ])
-            ]),
-            'parcels' => [
-                new ParcelsSimple([
-                    'dimensions' => new DimensionsSimple([
-                        'height' => 21.5,
-                        'length' => 2.1,
-                        'width' => 1.7
-                    ]),
-                    'weight' => new WeightSimple([
-                        'amount' => 2.0
-                    ]),
-                    'is_non_standard' => false
-                ])
-            ],
-            'additional_services' => []
-        ];
-        if ($includeService) {
-            $data['service'] = 'inpost_courier_standard';
-        }
-        return $data;
+        $addressForm = new AddressForm();
+        $addressForm->city = 'Warszawa';
+        $addressForm->post_code = '01-234';
+        $addressForm->country_code = 'PL';
+        $addressForm->street = 'Testowa 11';
+        $addressForm->building_number = '12/23';
+
+        $receiverForm = new TransactionPartyForm();
+        $receiverForm->phone = '123456789';
+        $receiverForm->email = 'some.guy@gmail.com';
+        $receiverForm->first_name = $firstName;
+        $receiverForm->last_name = 'Testowy';
+        $receiverForm->address = $addressForm;
+
+        $dimensions = new DimensionsSimple();
+        $dimensions->height = 21.5;
+        $dimensions->length = 2.1;
+        $dimensions->width = 1.7;
+
+        $weight = new WeightSimple();
+        $weight->amount = 2.0;
+
+        $parcel = new ParcelsSimple();
+        $parcel->dimensions = $dimensions;
+        $parcel->weight = $weight;
+        $parcel->is_non_standard = false;
+
+        $shipmentForm->receiver = $receiverForm;
+        $shipmentForm->parcels = [$parcel];
+        $shipmentForm->additional_services = [];
     }
 
     private function getShipment(int $shipmentId, string $status): Shipment
@@ -497,24 +503,28 @@ class ShipmentResourceTest extends TestCase
         return $shipment;
     }
 
-    private function createBuyShipmentForm(int $offerId): BuyShipment
+    private function createBuyShipmentForm(int $offerId): ShipmentBuyForm
     {
-        return new BuyShipment(['offer_id' => $offerId]);
+        $shipmentBuyForm = new ShipmentBuyForm();
+        $shipmentBuyForm->offer_id = $offerId;
+        return $shipmentBuyForm;
     }
 
-    private function createShipmentOffersCollectionForm(array $data): ShipmentOffersCollection
+    private function createShipmentOffersCollectionForm(array $data): ShipmentOfferCollectionForm
     {
-        $shipmentOffersCollection = new ShipmentOffersCollection(['shipments' => []]);
+        $shipmentOfferCollectionForm = new ShipmentOfferCollectionForm();
+        $shipments = [];
         $i = 1;
         foreach ($data as $shipmentId => $offerId) {
-            $shipmentOffersCollection->shipments[] = new ShipmentOfferItem([
-                'id' => $i,
-                'shipment_id' => $shipmentId,
-                'offer_id' => $offerId
-            ]);
+            $shipmentOfferItemForm = new ShipmentOfferItemForm();
+            $shipmentOfferItemForm->id = $i;
+            $shipmentOfferItemForm->shipment_id = $shipmentId;
+            $shipmentOfferItemForm->offer_id = $offerId;
+            $shipments[] = $shipmentOfferItemForm;
             $i++;
         }
-        return $shipmentOffersCollection;
+        $shipmentOfferCollectionForm->shipments = $shipments;
+        return $shipmentOfferCollectionForm;
     }
 
     private function loadCreatedShipmentBatch(

@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace MB\ShipXSDK\Method\Shipment;
 
-use MB\ShipXSDK\Form\CreateShipmentBatch;
+use MB\ShipXSDK\Model\ShipmentBatchForm;
 use MB\ShipXSDK\Method\MethodInterface;
 use MB\ShipXSDK\Method\WithAuthorizationInterface;
 use MB\ShipXSDK\Method\WithJsonRequestInterface;
@@ -35,7 +35,7 @@ class CreateBatch implements
 
     public function getRequestPayloadModelName(): string
     {
-        return CreateShipmentBatch::class;
+        return ShipmentBatchForm::class;
     }
 
     public function getResponsePayloadModelName(): string

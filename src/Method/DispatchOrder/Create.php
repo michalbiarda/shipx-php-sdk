@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace MB\ShipXSDK\Method\DispatchOrder;
 
-use MB\ShipXSDK\Form\CreateDispatchOrder;
+use MB\ShipXSDK\Model\DispatchOrderForm;
 use MB\ShipXSDK\Method\MethodInterface;
 use MB\ShipXSDK\Method\WithAuthorizationInterface;
 use MB\ShipXSDK\Method\WithJsonRequestInterface;
@@ -35,7 +35,7 @@ class Create implements
 
     public function getRequestPayloadModelName(): string
     {
-        return CreateDispatchOrder::class;
+        return DispatchOrderForm::class;
     }
 
     public function getResponsePayloadModelName(): string

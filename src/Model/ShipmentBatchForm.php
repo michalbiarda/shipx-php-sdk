@@ -7,16 +7,16 @@
 
 declare(strict_types=1);
 
-namespace MB\ShipXSDK\Form;
+namespace MB\ShipXSDK\Model;
 
 use MB\ShipXSDK\DataTransferObject\DataTransferObject;
 
-class CreateShipmentBatch extends DataTransferObject
+class ShipmentBatchForm extends DataTransferObject
 {
     public bool $only_choice_of_offer = false;
 
     /**
-     * @var \MB\ShipXSDK\Form\CreateShipmentBatch\Item[]
+     * @var \MB\ShipXSDK\Model\ShipmentBatchItemForm[]
      */
-    public array $shipments;
+    public array $shipments = [];
 }

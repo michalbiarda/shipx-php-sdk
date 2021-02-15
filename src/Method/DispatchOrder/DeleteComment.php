@@ -9,12 +9,12 @@ declare(strict_types=1);
 
 namespace MB\ShipXSDK\Method\DispatchOrder;
 
-use MB\ShipXSDK\Form\DeleteComment as DeleteCommentForm;
+use MB\ShipXSDK\Model\DispatchOrder;
+use MB\ShipXSDK\Model\DispatchOrderCommentDeleteForm;
 use MB\ShipXSDK\Method\MethodInterface;
 use MB\ShipXSDK\Method\WithAuthorizationInterface;
 use MB\ShipXSDK\Method\WithJsonRequestInterface;
 use MB\ShipXSDK\Method\WithJsonResponseInterface;
-use MB\ShipXSDK\Model\CreateDispatchOrder;
 use MB\ShipXSDK\Request\Request;
 
 class DeleteComment implements
@@ -35,11 +35,11 @@ class DeleteComment implements
 
     public function getRequestPayloadModelName(): string
     {
-        return DeleteCommentForm::class;
+        return DispatchOrderCommentDeleteForm::class;
     }
 
     public function getResponsePayloadModelName(): string
     {
-        return CreateDispatchOrder::class;
+        return DispatchOrder::class;
     }
 }

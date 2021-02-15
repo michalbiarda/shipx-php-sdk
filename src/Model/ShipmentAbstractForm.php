@@ -7,24 +7,20 @@
 
 declare(strict_types=1);
 
-namespace MB\ShipXSDK\Form;
+namespace MB\ShipXSDK\Model;
 
 use MB\ShipXSDK\DataTransferObject\DataTransferObject;
-use MB\ShipXSDK\Model\Price;
-use MB\ShipXSDK\Model\Receiver;
-use MB\ShipXSDK\Model\Sender;
-use MB\ShipXSDK\Model\ShipmentCustomAttributes;
 
-abstract class AbstractCreateShipment extends DataTransferObject
+abstract class ShipmentAbstractForm extends DataTransferObject
 {
-    public Receiver $receiver;
+    public ?TransactionPartyForm $receiver;
 
-    public ?Sender $sender;
+    public ?TransactionPartyForm $sender;
 
     /**
      * @var \MB\ShipXSDK\Model\ParcelsSimple[]
      */
-    public array $parcels;
+    public array $parcels = [];
 
     public ?ShipmentCustomAttributes $custom_attributes;
 
@@ -40,7 +36,7 @@ abstract class AbstractCreateShipment extends DataTransferObject
     /**
      * @var string[]
      */
-    public ?array $additional_services;
+    public array $additional_services = [];
 
     public ?string $external_customer_id;
 

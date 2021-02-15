@@ -11,7 +11,7 @@ namespace MB\ShipXSDK\Model;
 
 use MB\ShipXSDK\DataTransferObject\DataTransferObject;
 
-abstract class AbstractTransactionParty extends DataTransferObject
+class TransactionParty extends DataTransferObject
 {
     public ?string $company_name;
 

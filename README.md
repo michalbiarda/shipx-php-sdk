@@ -71,42 +71,43 @@ The body of the response might be taken by running response's `getPayload` metho
 ### 3.3. Exemplary API call
 
 ```php
+$addressForm = new \MB\ShipXSDK\Model\AddressForm();
+$addressForm->city = 'Warszawa';
+$addressForm->post_code = '01-234';
+$addressForm->country_code = 'PL';
+$addressForm->street = 'Testowa 11';
+$addressForm->building_number = '12/23';
+
+$receiver = new \MB\ShipXSDK\Model\TransactionPartyForm();
+$receiver->phone = '123456789';
+$receiver->email = 'some.guy@gmail.com';
+$receiver->first_name = 'Michał';
+$receiver->last_name = 'Testowy';
+$receiver->address = $addressForm;
+
+$dimensions = new \MB\ShipXSDK\Model\DimensionsSimple();
+$dimensions->height = 21.5;
+$dimensions->length = 2.1;
+$dimensions->width = 1.7;
+
+$weight = new \MB\ShipXSDK\Model\WeightSimple();
+$weight->amount = 2.0;
+
+$parcel = new \MB\ShipXSDK\Model\ParcelsSimple();
+$parcel->dimensions = $dimensions;
+$parcel->weight = $weight;
+$parcel->is_non_standard = false;
+
+$shipmentOfferForm = new \MB\ShipXSDK\Model\ShipmentOfferForm();
+$shipmentOfferForm->receiver = $receiver;
+$shipmentOfferForm->parcels = [$parcel];
+$shipmentOfferForm->additional_services = [];
+        
 $response = $client->callMethod(
 new \MB\ShipXSDK\Method\Shipment\CreateOffer(),
     ['organization_id' => '1234'],
     [],
-    new \MB\ShipXSDK\Form\CreateShipmentOffer([
-        'receiver' => new \MB\ShipXSDK\Model\Receiver([
-            'phone' => '123456789',
-            'email' => 'some.guy@gmail.com',
-            'address' => new \MB\ShipXSDK\Model\Address([
-                'line1' => '',
-                'city' => 'Warszawa',
-                'post_code' => '01-234',
-                'country_code' => 'PL',
-                'street' => 'Testowa 11',
-                'building_number' => '12/23'
-            ])
-        ]),
-        'parcels' => [
-            new \MB\ShipXSDK\Model\ParcelsSimple([
-                'dimensions' => new \MB\ShipXSDK\Model\DimensionsSimple([
-                    'height' => 21.5,
-                    'length' => 2.1,
-                    'width' => 1.7
-                ]),
-                'weight' => new \MB\ShipXSDK\Model\WeightSimple([
-                    'amount' => 2.0
-                ]),
-                'is_non_standard' => false
-            ])
-        ],
-        'additional_services' => [],
-        'service' => 'inpost_locker_standard',
-        'custom_attributes' => new \MB\ShipXSDK\Model\ShipmentCustomAttributes([
-            'target_point' => 'BOL01A'
-        ])
-    ])
+    $shipmentOfferForm
 );
 if ($response->getSuccess()) {
     /** @var \MB\ShipXSDK\Model\Shipment $payload */

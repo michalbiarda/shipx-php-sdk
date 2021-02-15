@@ -31,7 +31,7 @@ steps:
 - script: ./vendor/bin/phpmd ./src/ ansi cleancode,codesize,unusedcode,design
   displayName: 'Run PHP mess detector for basic rulesets'
 
-- script: ./vendor/bin/phpmd ./src/ ansi controversial,naming --exclude /Model/*,/Form/*
+- script: ./vendor/bin/phpmd ./src/ ansi controversial,naming --exclude /Model/*
   displayName: 'Run PHP mess detector for other rulesets'
 
 - script: ./vendor/bin/phpunit --no-configuration --log-junit $(System.DefaultWorkingDirectory)/junit-unit-report.xml ./src/Test/Unit/

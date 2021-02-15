@@ -7,13 +7,16 @@
 
 declare(strict_types=1);
 
-namespace MB\ShipXSDK\Form;
+namespace MB\ShipXSDK\Model;
 
 use MB\ShipXSDK\DataTransferObject\DataTransferObject;
 
-class UpdateComment extends DataTransferObject
+class DispatchOrderCalculateForm extends DataTransferObject
 {
-    public int $id;
+    public ?int $dispatch_point_id;
 
-    public string $comment;
+    /**
+     * @var int[]
+     */
+    public array $shipments = [];
 }

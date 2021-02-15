@@ -7,9 +7,9 @@
 
 declare(strict_types=1);
 
-namespace MB\ShipXSDK\Form;
+namespace MB\ShipXSDK\Model;
 
-class CreateShipment extends AbstractCreateShipment
+class ShipmentOfferForm extends ShipmentAbstractForm
 {
-    public string $service;
+
 }

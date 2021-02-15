@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace MB\ShipXSDK\Method\DispatchOrder;
 
-use MB\ShipXSDK\Form\UpdateComment as UpdateCommentForm;
+use MB\ShipXSDK\Model\DispatchOrderCommentUpdateForm;
 use MB\ShipXSDK\Method\MethodInterface;
 use MB\ShipXSDK\Method\WithAuthorizationInterface;
 use MB\ShipXSDK\Method\WithJsonRequestInterface;
@@ -35,7 +35,7 @@ class UpdateComment implements
 
     public function getRequestPayloadModelName(): string
     {
-        return UpdateCommentForm::class;
+        return DispatchOrderCommentUpdateForm::class;
     }
 
     public function getResponsePayloadModelName(): string
