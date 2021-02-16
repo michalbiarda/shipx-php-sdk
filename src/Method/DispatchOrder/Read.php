@@ -12,7 +12,7 @@ namespace MB\ShipXSDK\Method\DispatchOrder;
 use MB\ShipXSDK\Method\MethodInterface;
 use MB\ShipXSDK\Method\WithAuthorizationInterface;
 use MB\ShipXSDK\Method\WithJsonResponseInterface;
-use MB\ShipXSDK\Model\CreateDispatchOrder;
+use MB\ShipXSDK\Model\DispatchOrder;
 use MB\ShipXSDK\Request\Request;
 
 class Read implements
@@ -32,6 +32,6 @@ class Read implements
 
     public function getResponsePayloadModelName(): string
     {
-        return CreateDispatchOrder::class;
+        return DispatchOrder::class;
     }
 }

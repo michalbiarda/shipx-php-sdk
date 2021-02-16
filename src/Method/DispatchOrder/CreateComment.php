@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace MB\ShipXSDK\Method\DispatchOrder;
 
-use MB\ShipXSDK\Form\CreateComment as CreateCommentForm;
+use MB\ShipXSDK\Model\DispatchOrderCommentForm;
 use MB\ShipXSDK\Method\MethodInterface;
 use MB\ShipXSDK\Method\WithAuthorizationInterface;
 use MB\ShipXSDK\Method\WithJsonRequestInterface;
@@ -35,7 +35,7 @@ class CreateComment implements
 
     public function getRequestPayloadModelName(): string
     {
-        return CreateCommentForm::class;
+        return DispatchOrderCommentForm::class;
     }
 
     public function getResponsePayloadModelName(): string

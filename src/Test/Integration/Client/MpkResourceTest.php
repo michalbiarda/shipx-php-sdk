@@ -9,14 +9,13 @@ declare(strict_types=1);
 
 namespace MB\ShipXSDK\Test\Integration\Client;
 
-use MB\ShipXSDK\Form\CreateMpk;
-use MB\ShipXSDK\Form\UpdateMpk;
 use MB\ShipXSDK\Method\Mpk\Create;
 use MB\ShipXSDK\Method\Mpk\GetList;
 use MB\ShipXSDK\Method\Mpk\Read;
 use MB\ShipXSDK\Method\Mpk\Update;
 use MB\ShipXSDK\Model\Mpk;
 use MB\ShipXSDK\Model\MpkCollection;
+use MB\ShipXSDK\Model\MpkForm;
 
 use function time;
 
@@ -66,7 +65,7 @@ class MpkResourceTest extends TestCase
             new Create(),
             ['organization_id' => $this->organizationId],
             [],
-            $this->createCreateMpkForm($expectError ? '' : $this->testName)
+            $this->createMpkForm($expectError ? '' : $this->testName)
         );
         $payload = $response->getPayload();
         if ($expectError) {
@@ -84,7 +83,7 @@ class MpkResourceTest extends TestCase
             new Update(),
             ['id' => $mpkId],
             [],
-            $this->createUpdateMpkForm('New ' . $this->testName)
+            $this->createMpkForm('New ' . $this->testName)
         );
         $payload = $response->getPayload();
         if ($expectError) {
@@ -130,19 +129,11 @@ class MpkResourceTest extends TestCase
         return $payload;
     }
 
-    private function createCreateMpkForm(string $name): CreateMpk
+    private function createMpkForm(string $name): MpkForm
     {
-        return new CreateMpk([
-            'name' => $name,
-            'description' => 'Test MPK'
-        ]);
-    }
-
-    private function createUpdateMpkForm(string $name): UpdateMpk
-    {
-        return new UpdateMpk([
-            'name' => $name,
-            'description' => 'Test MPK'
-        ]);
+        $mpkForm = new MpkForm();
+        $mpkForm->name = $name;
+        $mpkForm->description = 'Test MPK';
+        return $mpkForm;
     }
 }

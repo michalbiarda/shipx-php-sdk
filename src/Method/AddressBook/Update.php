@@ -14,6 +14,7 @@ use MB\ShipXSDK\Method\WithAuthorizationInterface;
 use MB\ShipXSDK\Method\WithJsonRequestInterface;
 use MB\ShipXSDK\Method\WithJsonResponseInterface;
 use MB\ShipXSDK\Model\AddressBook;
+use MB\ShipXSDK\Model\AddressBookForm;
 use MB\ShipXSDK\Request\Request;
 
 class Update implements
@@ -34,7 +35,7 @@ class Update implements
 
     public function getRequestPayloadModelName(): string
     {
-        return AddressBook::class;
+        return AddressBookForm::class;
     }
 
     public function getResponsePayloadModelName(): string

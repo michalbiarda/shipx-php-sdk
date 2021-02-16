@@ -7,14 +7,14 @@
 
 declare(strict_types=1);
 
-namespace MB\ShipXSDK\Form;
+namespace MB\ShipXSDK\Model;
 
 use MB\ShipXSDK\DataTransferObject\DataTransferObject;
 
-class ShipmentOffersCollection extends DataTransferObject
+class DispatchOrderCommentDeleteForm extends DataTransferObject
 {
     /**
-     * @var \MB\ShipXSDK\Form\ShipmentOfferItem[]
+     * @var int[]
      */
-    public array $shipments;
+    public array $comment_ids = [];
 }

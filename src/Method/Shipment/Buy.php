@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace MB\ShipXSDK\Method\Shipment;
 
-use MB\ShipXSDK\Form\BuyShipment;
+use MB\ShipXSDK\Model\ShipmentBuyForm;
 use MB\ShipXSDK\Method\MethodInterface;
 use MB\ShipXSDK\Method\WithAuthorizationInterface;
 use MB\ShipXSDK\Method\WithJsonRequestInterface;
@@ -35,7 +35,7 @@ class Buy implements
 
     public function getRequestPayloadModelName(): string
     {
-        return BuyShipment::class;
+        return ShipmentBuyForm::class;
     }
 
     public function getResponsePayloadModelName(): string

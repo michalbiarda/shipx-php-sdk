@@ -11,13 +11,15 @@ namespace MB\ShipXSDK\Model;
 
 use MB\ShipXSDK\DataTransferObject\DataTransferObject;
 
-class DimensionsSimple extends DataTransferObject
+class AddressForm extends DataTransferObject
 {
-    public ?float $height;
+    public ?string $street;
 
-    public ?float $length;
+    public ?string $building_number;
 
-    public ?float $width;
+    public ?string $post_code;
 
-    public string $unit = 'mm';
+    public ?string $city;
+
+    public ?string $country_code;
 }

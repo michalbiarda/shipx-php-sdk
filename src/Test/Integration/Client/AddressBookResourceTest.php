@@ -9,13 +9,13 @@ declare(strict_types=1);
 
 namespace MB\ShipXSDK\Test\Integration\Client;
 
-use MB\ShipXSDK\DataTransferObject\DataTransferObject;
+use MB\ShipXSDK\Model\AddressForm;
+use MB\ShipXSDK\Model\AddressBookForm;
 use MB\ShipXSDK\Method\AddressBook\Create;
 use MB\ShipXSDK\Method\AddressBook\Delete;
 use MB\ShipXSDK\Method\AddressBook\GetList;
 use MB\ShipXSDK\Method\AddressBook\Read;
 use MB\ShipXSDK\Method\AddressBook\Update;
-use MB\ShipXSDK\Model\Address;
 use MB\ShipXSDK\Model\AddressBook;
 use MB\ShipXSDK\Model\AddressBookCollection;
 
@@ -74,7 +74,7 @@ class AddressBookResourceTest extends TestCase
             new Create(),
             ['organization_id' => $this->organizationId],
             [],
-            $this->createAddressBookModel($expectError ? '' : $this->testName)
+            $this->createAddressBookForm($expectError ? '' : $this->testName)
         );
         $payload = $response->getPayload();
         if ($expectError) {
@@ -92,7 +92,7 @@ class AddressBookResourceTest extends TestCase
             new Update(),
             ['id' => $addressBookId],
             [],
-            $this->createAddressBookModel('New ' . $this->testName)
+            $this->createAddressBookForm('New ' . $this->testName)
         );
         $payload = $response->getPayload();
         if ($expectError) {
@@ -155,29 +155,32 @@ class AddressBookResourceTest extends TestCase
         $this->assertSuccess($response, $payload, null);
     }
 
-    private function createAddressBookModel(string $name): AddressBook
+    private function createAddressBookForm(string $name): AddressBookForm
     {
-        return new AddressBook([
-            'name' => $name,
-            'first_name' => 'Jan',
-            'last_name' => 'Nowak',
-            'phone' => '500123456',
-            'email' => 'jan@niepodam.pl',
-            'kind' => 'sender',
-            'main_address' => new Address([
-                'city' => 'Warszawa',
-                'post_code' => '02-234',
-                'country_code' => 'PL',
-                'street' => 'Testowa',
-                'building_number' => '122/23'
-            ]),
-            'delivery_address' => new Address([
-                'city' => 'Warszawa',
-                'post_code' => '01-422',
-                'country_code' => 'PL',
-                'street' => 'Kolorowa',
-                'building_number' => '82/1'
-            ])
-        ]);
+        $addressBookForm = new AddressBookForm();
+        $addressBookForm->name = $name;
+        $addressBookForm->first_name = 'Jan';
+        $addressBookForm->last_name = 'Nowak';
+        $addressBookForm->phone = '500123456';
+        $addressBookForm->email = 'jan@niepodam.pl';
+        $addressBookForm->kind = 'sender';
+
+        $mainAddress = new AddressForm();
+        $mainAddress->city = 'Warszawa';
+        $mainAddress->post_code = '02-234';
+        $mainAddress->country_code = 'PL';
+        $mainAddress->street = 'Testowa';
+        $mainAddress->building_number = '122/23';
+        $addressBookForm->main_address = $mainAddress;
+
+        $deliveryAddress = new AddressForm();
+        $deliveryAddress->city = 'Warszawa';
+        $deliveryAddress->post_code = '01-422';
+        $deliveryAddress->country_code = 'PL';
+        $deliveryAddress->street = 'Kolorowa';
+        $deliveryAddress->building_number = '82/1';
+        $addressBookForm->delivery_address = $deliveryAddress;
+
+        return $addressBookForm;
     }
 }

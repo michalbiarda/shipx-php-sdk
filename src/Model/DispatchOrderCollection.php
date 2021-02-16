@@ -12,7 +12,7 @@ namespace MB\ShipXSDK\Model;
 class DispatchOrderCollection extends AbstractCollection
 {
     /**
-     * @var \MB\ShipXSDK\Model\CreateDispatchOrder[]
+     * @var \MB\ShipXSDK\Model\DispatchOrder[]
      */
     public array $items;
 }

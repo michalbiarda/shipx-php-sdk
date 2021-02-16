@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace MB\ShipXSDK\Method\Shipment;
 
-use MB\ShipXSDK\Form\ShipmentOffersCollection;
+use MB\ShipXSDK\Model\ShipmentOfferCollectionForm;
 use MB\ShipXSDK\Method\MethodInterface;
 use MB\ShipXSDK\Method\WithAuthorizationInterface;
 use MB\ShipXSDK\Method\WithJsonRequestInterface;
@@ -32,6 +32,6 @@ class BuyBulk implements
 
     public function getRequestPayloadModelName(): string
     {
-        return ShipmentOffersCollection::class;
+        return ShipmentOfferCollectionForm::class;
     }
 }

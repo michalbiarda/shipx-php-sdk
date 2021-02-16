@@ -7,13 +7,15 @@
 
 declare(strict_types=1);
 
-namespace MB\ShipXSDK\Form;
+namespace MB\ShipXSDK\Model;
 
 use MB\ShipXSDK\DataTransferObject\DataTransferObject;
 
-class CreateMpk extends DataTransferObject
+class ShipmentOfferItemForm extends DataTransferObject
 {
-    public string $name;
+    public ?int $id;
 
-    public string $description;
+    public ?int $shipment_id;
+
+    public ?int $offer_id;
 }

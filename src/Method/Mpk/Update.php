@@ -9,12 +9,12 @@ declare(strict_types=1);
 
 namespace MB\ShipXSDK\Method\Mpk;
 
-use MB\ShipXSDK\Form\UpdateMpk;
 use MB\ShipXSDK\Method\MethodInterface;
 use MB\ShipXSDK\Method\WithAuthorizationInterface;
 use MB\ShipXSDK\Method\WithJsonRequestInterface;
 use MB\ShipXSDK\Method\WithJsonResponseInterface;
 use MB\ShipXSDK\Model\Mpk;
+use MB\ShipXSDK\Model\MpkForm;
 use MB\ShipXSDK\Request\Request;
 
 class Update implements
@@ -35,7 +35,7 @@ class Update implements
 
     public function getRequestPayloadModelName(): string
     {
-        return UpdateMpk::class;
+        return MpkForm::class;
     }
 
     public function getResponsePayloadModelName(): string

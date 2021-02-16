@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace MB\ShipXSDK\Method\DispatchOrder;
 
-use MB\ShipXSDK\Form\CalculateDispatchOrder;
+use MB\ShipXSDK\Model\DispatchOrderCalculateForm;
 use MB\ShipXSDK\Method\MethodInterface;
 use MB\ShipXSDK\Method\WithAuthorizationInterface;
 use MB\ShipXSDK\Method\WithJsonRequestInterface;
@@ -35,7 +35,7 @@ class Calculate implements
 
     public function getRequestPayloadModelName(): string
     {
-        return CalculateDispatchOrder::class;
+        return DispatchOrderCalculateForm::class;
     }
 
     public function getResponsePayloadModelName(): string

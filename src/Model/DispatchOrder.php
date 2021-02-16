@@ -16,7 +16,7 @@ class DispatchOrder extends DataTransferObject
 {
     public string $href;
 
-    public string $id;
+    public int $id;
 
     public string $status;
 

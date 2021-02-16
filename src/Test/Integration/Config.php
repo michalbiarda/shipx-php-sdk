@@ -21,8 +21,8 @@ class Config
     private const ENV_WAIT_FOR_ASYNC = 'WAIT_FOR_ASYNC';
     private const ENV_DEBUG_ENABLED = 'DEBUG_ENABLED';
 
-    public const MAX_TRIES_FOR_ASYNC = 120;
-    public const WAITING_INTERVAL_FOR_ASYNC = 5;
+    public const MAX_TRIES_FOR_ASYNC = 300;
+    public const WAITING_INTERVAL_FOR_ASYNC = 2;
 
     public static function getBaseUri(): string
     {

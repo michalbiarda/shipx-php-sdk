@@ -13,7 +13,7 @@ use MB\ShipXSDK\DataTransferObject\DataTransferObject;
 
 class WeightSimple extends DataTransferObject
 {
-    public float $amount;
+    public ?float $amount;
 
     public string $unit = 'kg';
 }
