@@ -120,7 +120,7 @@ if ($response->getSuccess()) {
 
 Endpoints covered: 42/56
 
-Endpoints with integration tests: 29/56
+Endpoints with integration tests: 36/56
 
 ### 4.1. Shipments
 
@@ -396,7 +396,7 @@ Documentation: [Link](https://docs.inpost24.com/display/PL/%5B1.6.0%5D+Dispatch+
 
 Method: `\MB\ShipXSDK\Method\DispatchOrder\Create`
 
-Integration test: No
+Integration test: `\MB\ShipXSDK\Test\Integration\Client\ShipmentResourceTest::testSuccessfulDispatchOrderFlow`
 
 #### 4.8.2. Collecting information about a collection order
 
@@ -404,7 +404,7 @@ Documentation: [Link](https://docs.inpost24.com/display/PL/%5B1.6.0%5D+Dispatch+
 
 Method: `\MB\ShipXSDK\Method\DispatchOrder\Read`
 
-Integration test: No
+Integration test: `\MB\ShipXSDK\Test\Integration\Client\ShipmentResourceTest::testSuccessfulDispatchOrderFlow`
 
 #### 4.8.3. Removing a collection order
 
@@ -412,7 +412,7 @@ Documentation: [Link](https://docs.inpost24.com/display/PL/%5B1.6.0%5D+Dispatch+
 
 Method: `\MB\ShipXSDK\Method\DispatchOrder\Delete`
 
-Integration test: No
+Integration test: `\MB\ShipXSDK\Test\Integration\Client\ShipmentResourceTest::testSuccessfulDispatchOrderFlow`
 
 #### 4.8.4. List of collection orders
 
@@ -420,7 +420,7 @@ Documentation: [Link](https://docs.inpost24.com/display/PL/%5B1.6.0%5D+Dispatch+
 
 Method: `\MB\ShipXSDK\Method\DispatchOrder\GetList`
 
-Integration test: No
+Integration test: `\MB\ShipXSDK\Test\Integration\Client\ShipmentResourceTest::testSuccessfulDispatchOrderFlow`
 
 #### 4.8.5. Creating a comment to a collection order
 
@@ -428,7 +428,7 @@ Documentation: [Link](https://docs.inpost24.com/display/PL/%5B1.6.0%5D+Dispatch+
 
 Method: `\MB\ShipXSDK\Method\DispatchOrder\CreateComment`
 
-Integration test: No
+Integration test: `\MB\ShipXSDK\Test\Integration\Client\ShipmentResourceTest::testSuccessfulDispatchOrderFlow`
 
 #### 4.8.6. Updating a comment to a collection order
 
@@ -436,7 +436,7 @@ Documentation: [Link](https://docs.inpost24.com/display/PL/%5B1.6.0%5D+Dispatch+
 
 Method: `\MB\ShipXSDK\Method\DispatchOrder\UpdateComment`
 
-Integration test: No
+Integration test: `\MB\ShipXSDK\Test\Integration\Client\ShipmentResourceTest::testSuccessfulDispatchOrderFlow`
 
 #### 4.8.7. Delete comment to the dispatch order
 
@@ -444,7 +444,7 @@ Documentation: [Link](https://docs.inpost24.com/display/PL/%5B1.6.0%5D+Dispatch+
 
 Method: `\MB\ShipXSDK\Method\DispatchOrder\DeleteComment`
 
-Integration test: No
+Integration test: `\MB\ShipXSDK\Test\Integration\Client\ShipmentResourceTest::testSuccessfulDispatchOrderFlow`
 
 #### 4.8.8. Calculating prices of dispatch orders
 
@@ -453,6 +453,8 @@ Documentation: [Link](https://docs.inpost24.com/display/PL/%5B1.6.0%5D+Calculati
 Method: `\MB\ShipXSDK\Method\DispatchOrder\Calculate`
 
 Integration test: No
+
+Note: Each correct request to Sandbox API responds with the following error: "Action available only for prepaid users."
 
 #### 4.8.9. Printing dispatch orders
 
