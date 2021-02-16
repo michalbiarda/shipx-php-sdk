@@ -118,9 +118,9 @@ if ($response->getSuccess()) {
 
 ## 4. API endpoints coverage
 
-Endpoints covered: 42/56
+Endpoints covered: 44/57
 
-Endpoints with integration tests: 36/56
+Endpoints with integration tests: 38/57
 
 ### 4.1. Shipments
 
@@ -460,9 +460,17 @@ Note: Each correct request to Sandbox API responds with the following error: "Ac
 
 Documentation: [Link](https://docs.inpost24.com/display/PL/%5B1.6.0%5D+Printing+dispatch+orders)
 
-Method: No
+#### 4.8.9.1. Collection order
 
-Integration test: No
+Method: `\MB\ShipXSDK\Method\DispatchOrder\GetPrintout`
+
+Integration test: `\MB\ShipXSDK\Test\Integration\Client\ShipmentResourceTest::testSuccessfulDispatchOrderFlow`
+
+#### 4.8.9.2. Indicated parcel numbers
+
+Method: `\MB\ShipXSDK\Method\DispatchOrder\GetPrintouts`
+
+Integration test: `\MB\ShipXSDK\Test\Integration\Client\ShipmentResourceTest::testSuccessfulDispatchOrderFlow`
 
 ### 4.9. Address book
 
@@ -613,3 +621,7 @@ Documentation: [Link](https://docs.inpost24.com/display/PL/%5B1.16.5%5D+Points+r
 Method: `\MB\ShipXSDK\Method\Point\Read`
 
 Integration test: `\MB\ShipXSDK\Test\Integration\Client\PointResourceTest::testReadSuccessfulCall`
+
+## 5. Known issues
+
+The main known issue is instability of Sandbox API. From time to time newly created shipments are processed very slowly or end up in a void. Because of that integration tests sometimes fail unexpectedly. I guess we need to live with it...
