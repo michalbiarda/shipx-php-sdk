@@ -15,6 +15,8 @@ use MB\ShipXSDK\Method\DispatchOrder\CreateComment;
 use MB\ShipXSDK\Method\DispatchOrder\Delete;
 use MB\ShipXSDK\Method\DispatchOrder\DeleteComment;
 use MB\ShipXSDK\Method\DispatchOrder\GetList as GetDispatchOrderList;
+use MB\ShipXSDK\Method\DispatchOrder\GetPrintout;
+use MB\ShipXSDK\Method\DispatchOrder\GetPrintouts;
 use MB\ShipXSDK\Method\DispatchOrder\Read as DispatchOrderRead;
 use MB\ShipXSDK\Method\DispatchOrder\UpdateComment;
 use MB\ShipXSDK\Model\AddressForm;
@@ -230,8 +232,20 @@ class ShipmentResourceTest extends TestCase
         //$this->calculateDispatchOrder($shipment->id, false);
         $createdComment = $this->createDispatchOrderComment($dispatchOrder->id, false);
         $updatedComment = $this->updateDispatchOrderComment($dispatchOrder->id, $createdComment->id, false);
+        $this->getDispatchOrderPrintout($dispatchOrder->id, false);
+        $this->getDispatchOrderPrintouts($shipment->id, false);
         $dispatchOrder = $this->deleteDispatchOrderComment($dispatchOrder->id, $updatedComment->id, false);
         $this->deleteDispatchOrder($dispatchOrder->id, false);
+    }
+
+    public function testGetDispatchOrderPrintoutFailedCall(): void
+    {
+        $this->getDispatchOrderPrintout(0, true);
+    }
+
+    public function testGetDispatchOrderPrintoutsFailedCall(): void
+    {
+        $this->getDispatchOrderPrintouts(0, true);
     }
 
     public function testCreateDispatchOrderFailedCall(): void
@@ -806,5 +820,35 @@ class ShipmentResourceTest extends TestCase
             return;
         }
         $this->assertSuccess($response, $payload, null);
+    }
+
+    private function getDispatchOrderPrintout(int $dispatchOrderId, bool $expectError): void
+    {
+        $response = $this->client->callMethod(
+            new GetPrintout(),
+            ['organization_id' => $expectError ? static::WRONG_ID : $this->organizationId],
+            ['format' => 'Pdf', 'dispatch_order_id' => $dispatchOrderId]
+        );
+        $payload = $response->getPayload();
+        if ($expectError) {
+            $this->assertError($response, $payload);
+            return;
+        }
+        $this->assertSuccessWithFile($response, $payload, 'application/pdf');
+    }
+
+    private function getDispatchOrderPrintouts(int $shipmentId, bool $expectError): void
+    {
+        $response = $this->client->callMethod(
+            new GetPrintouts(),
+            ['organization_id' => $this->organizationId],
+            ['format' => 'Pdf', 'shipment_ids' => $expectError ? [] : [$shipmentId]]
+        );
+        $payload = $response->getPayload();
+        if ($expectError) {
+            $this->assertError($response, $payload);
+            return;
+        }
+        $this->assertSuccessWithFile($response, $payload, 'application/pdf');
     }
 }
