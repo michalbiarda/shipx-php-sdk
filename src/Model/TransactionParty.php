@@ -19,7 +19,7 @@ class TransactionParty extends DataTransferObject
 
     public string $phone;
 
-    public Address $address;
+    public ?Address $address;
 
     public ?string $first_name;
 
