@@ -13,7 +13,7 @@ use MB\ShipXSDK\DataTransferObject\DataTransferObject;
 
 class DictionaryItem extends DataTransferObject
 {
-    public string $key;
+    public ?string $key;
 
-    public string $message;
+    public ?string $message;
 }
