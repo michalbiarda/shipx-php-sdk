@@ -19,9 +19,9 @@ class Address extends DataTransferObject
 
     public ?string $line2;
 
-    public string $street;
+    public ?string $street;
 
-    public string $building_number;
+    public ?string $building_number;
 
     public string $post_code;
 

@@ -13,6 +13,10 @@ use MB\ShipXSDK\DataTransferObject\DataTransferObject;
 
 class AddressForm extends DataTransferObject
 {
+    public ?string $line1;
+
+    public ?string $line2;
+
     public ?string $street;
 
     public ?string $building_number;
