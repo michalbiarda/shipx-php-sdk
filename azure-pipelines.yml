@@ -34,7 +34,7 @@ steps:
 - script: ./vendor/bin/phpmd ./src/ ansi controversial,naming --exclude /Model/*
   displayName: 'Run PHP mess detector for other rulesets'
 
-- script: ./vendor/bin/phpunit --no-configuration --log-junit $(System.DefaultWorkingDirectory)/junit-unit-report.xml ./src/Test/Unit/
+- script: ./vendor/bin/phpunit --no-configuration --log-junit $(System.DefaultWorkingDirectory)/junit-unit-report.xml ./tests/Unit/
   displayName: 'Run unit tests with phpunit'
 
 - task: PublishTestResults@2
@@ -52,9 +52,9 @@ steps:
 
 - script: |
     echo Linking $(integrationTestsConfig.secureFilePath) to the integration tests directory...
-    sudo ln -s -t $(System.DefaultWorkingDirectory)/src/Test $(integrationTestsConfig.secureFilePath)
+    sudo ln -s -t $(System.DefaultWorkingDirectory)/tests $(integrationTestsConfig.secureFilePath)
 
-- script: ./vendor/bin/phpunit --configuration ./src/Test/phpunit_integration.xml --log-junit $(System.DefaultWorkingDirectory)/junit-integration-report.xml
+- script: ./vendor/bin/phpunit --configuration ./tests/phpunit_integration.xml --log-junit $(System.DefaultWorkingDirectory)/junit-integration-report.xml
   displayName: 'Run integration tests with phpunit'
 
 - task: PublishTestResults@2

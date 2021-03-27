@@ -1,6 +1,7 @@
 {
   "name": "michalbiarda/shipx-php-sdk",
-  "version": "1.0.0-alpha6",
+  "description": "PHP SDK for Inpost ShipX API",
+  "version": "1.0.0-alpha7",
   "authors": [
     {
       "email": "m.biarda@gmail.com",
@@ -20,6 +21,11 @@
   "autoload": {
     "psr-4": {
       "MB\\ShipXSDK\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "MB\\ShipXSDK\\Test\\": "tests/"
     }
   },
   "license": "Beerware",
