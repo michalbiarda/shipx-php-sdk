@@ -20,7 +20,7 @@ class ReportResourceTest extends TestCase
         $response = $this->client->callMethod(
             new GetCod(),
             ['organization_id' => $this->organizationId],
-            ['format' => 'csv', 'start_date' => '2020-01-01', 'end_date' => '2020-12-30']
+            ['format' => 'csv', 'start_date' => '2021-01-01', 'end_date' => '2021-05-30']
         );
         $this->assertSuccessWithFile($response, $response->getPayload(), 'application/csv');
     }
