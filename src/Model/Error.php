@@ -13,11 +13,11 @@ use MB\ShipXSDK\DataTransferObject\DataTransferObject;
 
 class Error extends DataTransferObject
 {
-    public ?int $status;
+    public int $status;
 
-    public ?string $error;
+    public string $error;
 
-    public ?string $message;
+    public string $message;
 
     public ?array $details;
 }
