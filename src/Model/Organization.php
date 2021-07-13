@@ -38,5 +38,5 @@ class Organization extends DataTransferObject
 
     public ?Address $invoice_address;
 
-    public Person $contact_person;
+    public ?Person $contact_person;
 }
