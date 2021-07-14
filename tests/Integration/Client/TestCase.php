@@ -49,10 +49,6 @@ class TestCase extends \PHPUnit\Framework\TestCase
     {
         if (!$response->getSuccess()) {
             $this->debug(print_r($response->getPayload()->toArray(), true));
-
-            if ($response->getPayload()->status === 500) {
-                $this->markTestSkipped('500 error: '. $response->getPayload()->message);
-            }
         }
 
         $this->assertTrue($response->getSuccess());

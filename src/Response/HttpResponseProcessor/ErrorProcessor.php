@@ -35,16 +35,17 @@ class ErrorProcessor extends AbstractJsonContentProcessor
             // This handles inconsistency in ShipX API. Some errors have HTTP status code 200 and error data in body.
             if (isset($data['status']) && $data['status'] !== 200 && isset($data['key']) && isset($data['error'])) {
                 return new Error([
-                    'status' => $data['status'] ?? $httpResponse->getStatusCode(),
-                    'error' => $data['key'] ?? '',
-                    'message' => $data['error'] ?? '',
+                    'status' => $data['status'],
+                    'error' => $data['key'],
+                    'message' => $data['error'],
                 ]);
             }
             return null;
         }
         $data['status'] ??= $httpResponse->getStatusCode();
-        $data['error'] = $data['key'] ?? '';
-        $data['message'] = $data['error'] ?? '';
+        $data['error'] ??= $data['key'] ?? '';
+        $data['message'] ??= $data['error'] ?? '';
+
         return new Error($data);
     }
 }
