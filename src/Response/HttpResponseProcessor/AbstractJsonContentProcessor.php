@@ -21,8 +21,8 @@ abstract class AbstractJsonContentProcessor implements ProcessorInterface
     public function run(MethodInterface $method, ResponseInterface $httpResponse): ?Response
     {
         if (in_array($httpResponse->getStatusCode(), $this->getHttpStatusCodes())) {
-            $contentType = explode('; ', $httpResponse->getHeaderLine('Content-Type'));
-            $mediaType = reset($contentType);
+            $contentType = explode(';', $httpResponse->getHeaderLine('Content-Type'));
+            $mediaType = trim(reset($contentType));
             if ($mediaType === 'application/json') {
                 $httpResponse->getBody()->rewind();
                 $data = json_decode($httpResponse->getBody()->getContents(), true);

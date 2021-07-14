@@ -37,11 +37,15 @@ class ErrorProcessor extends AbstractJsonContentProcessor
                 return new Error([
                     'status' => $data['status'],
                     'error' => $data['key'],
-                    'message' => $data['error']
+                    'message' => $data['error'],
                 ]);
             }
             return null;
         }
+        $data['status'] ??= $httpResponse->getStatusCode();
+        $data['error'] ??= $data['key'] ?? '';
+        $data['message'] ??= $data['error'] ?? '';
+
         return new Error($data);
     }
 }

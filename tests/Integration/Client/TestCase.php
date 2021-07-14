@@ -50,6 +50,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
         if (!$response->getSuccess()) {
             $this->debug(print_r($response->getPayload()->toArray(), true));
         }
+
         $this->assertTrue($response->getSuccess());
         $this->assertInstanceOf(BinaryContent::class, $payload);
         /** @var BinaryContent $payload */
