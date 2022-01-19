@@ -1,5 +1,5 @@
 {
-  "name": "michalbiarda/shipx-php-sdk",
+  "name": "snapshotpl/shipx-php-sdk",
   "description": "PHP SDK for Inpost ShipX API",
   "version": "1.0.0-alpha7",
   "authors": [
