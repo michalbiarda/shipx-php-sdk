@@ -2,3 +2,6 @@
 .phpunit.result.cache
 vendor
 tests/phpunit_integration.xml
+junit-unit-report.xml
+junit-integration-report.xml
+composer.lock
