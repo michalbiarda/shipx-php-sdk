@@ -13,5 +13,4 @@ use InvalidArgumentException;
 
 class InvalidQueryParamsException extends InvalidArgumentException
 {
-
 }

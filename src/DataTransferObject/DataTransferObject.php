@@ -39,8 +39,8 @@ class DataTransferObject extends OriginalDataTransferObject
 
     /**
      * @param OriginalValueCaster $valueCaster
-     * @param FieldValidator $fieldValidator
-     * @param mixed $value
+     * @param FieldValidator      $fieldValidator
+     * @param mixed               $value
      *
      * @return mixed
      */

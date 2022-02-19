@@ -13,5 +13,4 @@ use InvalidArgumentException;
 
 class InvalidModelException extends InvalidArgumentException
 {
-
 }

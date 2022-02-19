@@ -20,14 +20,19 @@ class BinaryContentProcessor implements ProcessorInterface
     public function run(MethodInterface $method, ResponseInterface $httpResponse): ?Response
     {
         if (
-            $method instanceof WithBinaryResponseInterface &&
-            $httpResponse->getStatusCode() === 200 &&
-            $httpResponse->getHeaderLine('Content-Transfer-Encoding') === 'binary'
+            $method instanceof WithBinaryResponseInterface
+            && $httpResponse->getStatusCode() === 200
+            && $httpResponse->getHeaderLine('Content-Transfer-Encoding') === 'binary'
         ) {
-            return new Response(true, new BinaryContent([
-                'stream' => $httpResponse->getBody(),
-                'content_type' => $httpResponse->getHeaderLine('Content-Type')
-            ]));
+            return new Response(
+                true,
+                new BinaryContent(
+                    [
+                    'stream' => $httpResponse->getBody(),
+                    'content_type' => $httpResponse->getHeaderLine('Content-Type')
+                    ]
+                )
+            );
         }
         return null;
     }

@@ -24,6 +24,7 @@ class AbstractCollection extends DataTransferObject
     /**
      * Classes extending this class should have specified proper type of this array in doc block.
      * A fully qualified name must be used, eg. "@var \MB\ShipXSDK\Model\Organization[]"
+     *
      * @var array
      */
     public array $items;

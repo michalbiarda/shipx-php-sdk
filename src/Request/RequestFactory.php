@@ -38,9 +38,9 @@ class RequestFactory
     }
 
     /**
-     * @param MethodInterface $method
-     * @param array $uriParams
-     * @param array $queryParams
+     * @param  MethodInterface $method
+     * @param  array           $uriParams
+     * @param  array           $queryParams
      * @return string
      * @throws InvalidArgumentException
      * @throws InvalidQueryParamsException
@@ -53,7 +53,7 @@ class RequestFactory
             if (!array_key_exists($param, $uriParams)) {
                 throw new InvalidArgumentException(sprintf('Value for "%s" param is missing.', $param));
             }
-            $uri = str_replace(':' . $param, $uriParams[$param], $uri);
+            $uri = str_replace(':' . $param, (string) $uriParams[$param], $uri);
         }
         $this->validateQueryParams($queryParams, $method);
         $query = http_build_query($queryParams);
@@ -62,8 +62,8 @@ class RequestFactory
     }
 
     /**
-     * @param MethodInterface $method
-     * @param DataTransferObject|null $payload
+     * @param  MethodInterface         $method
+     * @param  DataTransferObject|null $payload
      * @return array|null
      */
     private function buildPayloadArray(MethodInterface $method, ?DataTransferObject $payload): ?array
@@ -85,8 +85,8 @@ class RequestFactory
     }
 
     /**
-     * @param MethodInterface $method
-     * @param string|null $authToken
+     * @param  MethodInterface $method
+     * @param  string|null     $authToken
      * @return array|null
      */
     private function buildHeadersArray(MethodInterface $method, ?string $authToken): ?array
@@ -108,7 +108,7 @@ class RequestFactory
     }
 
     /**
-     * @param string $param
+     * @param string      $param
      * @param string|null $value
      */
     private function throwInvalidQueryParamException(string $param, ?string $value = null): void
@@ -124,8 +124,8 @@ class RequestFactory
     }
 
     /**
-     * @param string $uriTemplate
-     * @return string[]
+     * @param                                     string $uriTemplate
+     * @return                                    string[]
      * @SuppressWarnings(PHPMD.UndefinedVariable)
      */
     private function getUriParamsFromTemplate(string $uriTemplate): array
@@ -159,15 +159,19 @@ class RequestFactory
     {
         $requiredParams = [];
         if ($method instanceof WithQueryParamsInterface) {
-            /** @var WithQueryParamsInterface $method */
+            /**
+ * @var WithQueryParamsInterface $method
+*/
             $requiredParams = array_merge($requiredParams, $method->getRequiredQueryParams());
         }
         $missingParams = array_diff($requiredParams, array_keys($queryParams));
         if (!empty($missingParams)) {
-            throw new InvalidQueryParamsException(sprintf(
-                'Values for the following query params are missing: %s',
-                join(', ', $missingParams)
-            ));
+            throw new InvalidQueryParamsException(
+                sprintf(
+                    'Values for the following query params are missing: %s',
+                    join(', ', $missingParams)
+                )
+            );
         }
     }
 
@@ -176,7 +180,9 @@ class RequestFactory
         if (!$method instanceof WithSortableResultsInterface) {
             $this->throwInvalidQueryParamException($param);
         }
-        /** @var $method WithSortableResultsInterface */
+        /**
+ * @var $method WithSortableResultsInterface
+*/
         if (!in_array($value, $method->getSortableFields())) {
             $this->throwInvalidQueryParamException($param, $value);
         }
@@ -187,7 +193,9 @@ class RequestFactory
         if (!$method instanceof WithSortableResultsInterface) {
             $this->throwInvalidQueryParamException($param);
         }
-        /** @var $method WithSortableResultsInterface */
+        /**
+ * @var $method WithSortableResultsInterface
+*/
         if (
             !in_array(
                 $value,
@@ -212,11 +220,15 @@ class RequestFactory
     {
         $validParams = [];
         if ($method instanceof WithFilterableResultsInterface) {
-            /** @var $method WithFilterableResultsInterface */
+            /**
+ * @var $method WithFilterableResultsInterface
+*/
             $validParams = array_merge($validParams, $method->getFilters());
         }
         if ($method instanceof WithQueryParamsInterface) {
-            /** @var $method WithQueryParamsInterface */
+            /**
+ * @var $method WithQueryParamsInterface
+*/
             $validParams = array_merge(
                 $validParams,
                 $method->getOptionalQueryParams(),

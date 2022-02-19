@@ -11,5 +11,4 @@ namespace MB\ShipXSDK\Method;
 
 interface WithAuthorizationInterface
 {
-
 }

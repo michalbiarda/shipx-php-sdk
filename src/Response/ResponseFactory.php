@@ -28,13 +28,18 @@ class ResponseFactory
     public function create(MethodInterface $method, ResponseInterface $httpResponse): Response
     {
         $response = $this->responseProcessor->process($method, $httpResponse);
-        return $response ?: new Response(false, new Error([
-            'status' => -1,
-            'error' => 'unprocessed_response',
-            'message' => 'The response did not match any processor.',
-            'details' => [
+        return $response ?: new Response(
+            false,
+            new Error(
+                [
+                'status' => -1,
+                'error' => 'unprocessed_response',
+                'message' => 'The response did not match any processor.',
+                'details' => [
                 'http_response' => $httpResponse
-            ]
-        ]));
+                ]
+                ]
+            )
+        );
     }
 }

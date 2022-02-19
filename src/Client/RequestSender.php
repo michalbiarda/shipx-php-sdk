@@ -32,9 +32,9 @@ class RequestSender implements RequestSenderInterface
     private ?RequestInterface $lastHttpRequest;
 
     /**
-     * @param ClientInterface|null $httpClient
-     * @param RequestFactoryInterface|null $requestFactory
-     * @param StreamFactoryInterface|null $streamFactory
+     * @param                                ClientInterface|null         $httpClient
+     * @param                                RequestFactoryInterface|null $requestFactory
+     * @param                                StreamFactoryInterface|null  $streamFactory
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function __construct(

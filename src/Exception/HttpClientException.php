@@ -13,5 +13,4 @@ use RuntimeException;
 
 class HttpClientException extends RuntimeException
 {
-
 }

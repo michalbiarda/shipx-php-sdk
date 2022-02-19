@@ -1,0 +1,46 @@
+name: "Static analysis"
+
+on:
+    pull_request:
+    push:
+        branches:
+            - main
+            - master
+jobs:
+    phpstan:
+        name: "PHPStan"
+        runs-on: "ubuntu-20.04"
+        strategy:
+            matrix:
+                php-version:
+                    - "8.0"
+                    - "8.1"
+        steps:
+            -   name: "Checkout"
+                uses: "actions/checkout@v2"
+            -   name: "Install PHP"
+                uses: "shivammathur/setup-php@v2"
+                with:
+                    php-version: "${{ matrix.php-version }}"
+            -   name: "Install dependencies"
+                run: composer update --no-interaction --no-progress
+            -   name: "PHPStan"
+                run: vendor/bin/phpstan analyse --memory-limit=-1 --no-progress --level=1 src tests
+    phpcs:
+        name: "PHP CS"
+        runs-on: "ubuntu-20.04"
+        strategy:
+            matrix:
+                php-version:
+                    - "8.0"
+        steps:
+            -   name: "Checkout"
+                uses: "actions/checkout@v2"
+            -   name: "Install PHP"
+                uses: "shivammathur/setup-php@v2"
+                with:
+                    php-version: "${{ matrix.php-version }}"
+            -   name: "Install dependencies"
+                run: composer update --no-interaction --no-progress
+            -   name: "Run"
+                run: ./vendor/bin/phpcs --standard=./phpcs.ruleset.xml ./src/
