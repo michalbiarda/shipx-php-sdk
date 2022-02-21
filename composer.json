@@ -8,9 +8,9 @@
     }
   ],
   "require": {
-    "php": "^7.4 || ^8.0",
+    "php": "^8.0",
     "ext-json": "*",
-    "spatie/data-transfer-object": "^2.5",
+    "spatie/data-transfer-object": "^3.7.3",
     "psr/http-client-implementation": "^1.0",
     "psr/http-factory-implementation": "^1.0",
     "php-http/httplug": "^2.0",
